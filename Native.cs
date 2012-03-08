@@ -62,6 +62,7 @@ namespace LevelDB
             return db;
         }
 
+        // extern void leveldb_close(leveldb_t* db);
         [DllImport("leveldb")]
         public static extern void leveldb_close(IntPtr db);
 
@@ -88,12 +89,15 @@ namespace LevelDB
             CheckError(error);
         }
 
+        // extern void leveldb_delete(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, char** errptr);
         [DllImport("leveldb")]
-        public static extern void leveldb_delete(IntPtr db, IntPtr options, string key, UIntPtr keylen, out string error);
+        public static extern void leveldb_delete(IntPtr db, IntPtr writeOptions, string key, UIntPtr keylen, out string error);
 
+        // extern void leveldb_write(leveldb_t* db, const leveldb_writeoptions_t* options, leveldb_writebatch_t* batch, char** errptr);
         [DllImport("leveldb")]
         public static extern void leveldb_write(IntPtr db, IntPtr options, IntPtr batch, out string error);
 
+        // extern char* leveldb_get(leveldb_t* db, const leveldb_readoptions_t* options, const char* key, size_t keylen, size_t* vallen, char** errptr);
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_get(IntPtr db,
                                                 IntPtr readOptions,
@@ -117,16 +121,20 @@ namespace LevelDB
             return Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
         }
 
+        // extern leveldb_iterator_t* leveldb_create_iterator(leveldb_t* db, const leveldb_readoptions_t* options);
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_create_iterator(IntPtr db, IntPtr readOptions);
 
-        /* Options */
+#region Options
+        // extern leveldb_options_t* leveldb_options_create();
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_options_create();
 
+        // extern void leveldb_options_destroy(leveldb_options_t*);
         [DllImport("leveldb")]
         public static extern void leveldb_options_destroy(IntPtr options);
 
+        // extern void leveldb_options_set_comparator(leveldb_options_t*, leveldb_comparator_t*);
         [DllImport("leveldb")]
         public static extern void leveldb_options_set_comparator(IntPtr options, IntPtr comparator);
 
@@ -134,6 +142,7 @@ namespace LevelDB
         /// If true, the database will be created if it is missing.
         /// Default: false
         /// </summary>
+        // extern void leveldb_options_set_create_if_missing(leveldb_options_t*, unsigned char);
         [DllImport("leveldb")]
         public static extern void leveldb_options_set_create_if_missing(IntPtr options, bool value);
 
@@ -141,6 +150,7 @@ namespace LevelDB
         /// If true, an error is raised if the database already exists.
         /// Default: false
         /// </summary>
+        // extern void leveldb_options_set_error_if_exists(leveldb_options_t*, unsigned char);
         [DllImport("leveldb")]
         public static extern void leveldb_options_set_error_if_exists(IntPtr options, bool value);
 
@@ -152,6 +162,7 @@ namespace LevelDB
         /// become unreadable or for the entire DB to become unopenable.
         /// Default: false
         /// </summary>
+        // extern void leveldb_options_set_paranoid_checks(leveldb_options_t*, unsigned char);
         [DllImport("leveldb")]
         public static extern void leveldb_options_set_paranoid_checks(IntPtr options, bool value);
 
@@ -222,12 +233,17 @@ namespace LevelDB
           leveldb_snappy_compression = 1
         };
         */
+#endregion
 
+#region Read Options
+        // extern leveldb_readoptions_t* leveldb_readoptions_create();
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_readoptions_create();
 
+        // extern void leveldb_readoptions_destroy(leveldb_readoptions_t*);
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_destroy(IntPtr readOptions);
+
         /*
         extern void leveldb_readoptions_set_verify_checksums(
             leveldb_readoptions_t*,
@@ -240,16 +256,22 @@ namespace LevelDB
         // extern void leveldb_readoptions_set_fill_cache(leveldb_readoptions_t*, unsigned char);
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_set_fill_cache(IntPtr readOptions, bool value);
+#endregion
 
+#region Write Options
+        // extern leveldb_writeoptions_t* leveldb_writeoptions_create();
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_writeoptions_create();
 
+        // extern void leveldb_writeoptions_destroy(leveldb_writeoptions_t*);
         [DllImport("leveldb")]
         public static extern void leveldb_writeoptions_destroy(IntPtr writeOptions);
+
         /*
         extern void leveldb_writeoptions_set_sync(
             leveldb_writeoptions_t*, unsigned char);
         */
+#endregion
 
 #region Iterator
         // extern void leveldb_iter_seek_to_first(leveldb_iterator_t*);
