@@ -135,14 +135,14 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         [DllImport("leveldb")]
-        public static extern void leveldb_options_set_create_if_missing(IntPtr options, char value);
+        public static extern void leveldb_options_set_create_if_missing(IntPtr options, bool value);
 
         /// <summary>
         /// If true, an error is raised if the database already exists.
         /// Default: false
         /// </summary>
         [DllImport("leveldb")]
-        public static extern void leveldb_options_set_error_if_exists(IntPtr options, char value);
+        public static extern void leveldb_options_set_error_if_exists(IntPtr options, bool value);
 
         /// <summary>
         /// If true, the implementation will do aggressive checking of the
@@ -153,7 +153,7 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         [DllImport("leveldb")]
-        public static extern void leveldb_options_set_paranoid_checks(IntPtr options, char value);
+        public static extern void leveldb_options_set_paranoid_checks(IntPtr options, bool value);
 
         /// <summary>
         /// Number of open files that can be used by the DB.  You may need to
