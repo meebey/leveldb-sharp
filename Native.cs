@@ -92,6 +92,13 @@ namespace LevelDB
         // extern void leveldb_delete(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, char** errptr);
         [DllImport("leveldb")]
         public static extern void leveldb_delete(IntPtr db, IntPtr writeOptions, string key, UIntPtr keylen, out string error);
+        public static void leveldb_delete(IntPtr db, IntPtr writeOptions, string key)
+        {
+            string error;
+            var keyLength =  GetStringLength(key);
+            leveldb_delete(db, writeOptions, key, keyLength, out error);
+            CheckError(error);
+        }
 
         // extern void leveldb_write(leveldb_t* db, const leveldb_writeoptions_t* options, leveldb_writebatch_t* batch, char** errptr);
         [DllImport("leveldb")]
