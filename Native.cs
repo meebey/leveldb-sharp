@@ -81,7 +81,7 @@ namespace LevelDB
                                        string value)
         {
             string error;
-            var keyLength =  GetStringLength(key);
+            var keyLength = GetStringLength(key);
             var valueLength = GetStringLength(value);
             Native.leveldb_put(db, writeOptions,
                                key, keyLength,
@@ -95,7 +95,7 @@ namespace LevelDB
         public static void leveldb_delete(IntPtr db, IntPtr writeOptions, string key)
         {
             string error;
-            var keyLength =  GetStringLength(key);
+            var keyLength = GetStringLength(key);
             leveldb_delete(db, writeOptions, key, keyLength, out error);
             CheckError(error);
         }
@@ -294,7 +294,7 @@ namespace LevelDB
         public static extern void leveldb_iter_seek(IntPtr iter, string key, UIntPtr keyLength);
         public static void leveldb_iter_seek(IntPtr iter, string key)
         {
-            var keyLength =  GetStringLength(key);
+            var keyLength = GetStringLength(key);
             leveldb_iter_seek(iter, key, keyLength);
         }
 
