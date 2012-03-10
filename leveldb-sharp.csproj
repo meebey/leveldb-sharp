@@ -36,6 +36,12 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Native.cs" />
+    <Compile Include="DB.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="CompressionType.cs" />
+    <Compile Include="Cache.cs" />
+    <Compile Include="WriteOptions.cs" />
+    <Compile Include="ReadOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
