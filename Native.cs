@@ -125,7 +125,9 @@ namespace LevelDB
             if (valuePtr == IntPtr.Zero || valueLength == UIntPtr.Zero) {
                 return null;
             }
-            return Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
+            var value = Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
+            Marshal.FreeHGlobal(valuePtr);
+            return value;
         }
 
         // extern leveldb_iterator_t* leveldb_create_iterator(leveldb_t* db, const leveldb_readoptions_t* options);
@@ -320,7 +322,9 @@ namespace LevelDB
             if (keyPtr == IntPtr.Zero || keyLength == UIntPtr.Zero) {
                 return null;
             }
-            return Marshal.PtrToStringAnsi(keyPtr, (int) keyLength);
+            var key = Marshal.PtrToStringAnsi(keyPtr, (int) keyLength);
+            Marshal.FreeHGlobal(keyPtr);
+            return key;
         }
 
         // extern const char* leveldb_iter_value(const leveldb_iterator_t*, size_t* vlen);
@@ -333,7 +337,9 @@ namespace LevelDB
             if (valuePtr == IntPtr.Zero || valueLength == UIntPtr.Zero) {
                 return null;
             }
-            return Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
+            var value = Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
+            Marshal.FreeHGlobal(valuePtr);
+            return value;
         }
 
         // extern void leveldb_iter_destroy(leveldb_iterator_t*);
