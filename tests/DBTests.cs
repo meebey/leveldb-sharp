@@ -30,6 +30,7 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.IO;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace LevelDB
@@ -99,6 +100,27 @@ namespace LevelDB
             Database.Delete(null, "key1");
             value1 = Database.Get(null, "key1");
             Assert.IsNull(value1);
+        }
+
+        [Test]
+        public void Enumerator()
+        {
+            Database.Put(null, "key1", "value1");
+            Database.Put(null, "key2", "value2");
+            Database.Put(null, "key3", "value3");
+
+            var entries = new List<KeyValuePair<string, string>>();
+            foreach (var entry in Database) {
+                entries.Add(entry);
+            }
+
+            Assert.AreEqual(3, entries.Count);
+            Assert.AreEqual("key1", entries[0].Key);
+            Assert.AreEqual("value1", entries[0].Value);
+            Assert.AreEqual("key2", entries[1].Key);
+            Assert.AreEqual("value2", entries[1].Value);
+            Assert.AreEqual("key3", entries[2].Key);
+            Assert.AreEqual("value3", entries[2].Value);
         }
     }
 }

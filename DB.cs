@@ -29,10 +29,12 @@
 //  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LevelDB
 {
-    public class DB : IDisposable
+    public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
     {
         internal IntPtr Handle { get; set; }
 
@@ -117,6 +119,32 @@ namespace LevelDB
         public string Get(string key)
         {
             return Get (null, key);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            var options = new ReadOptions();
+            IntPtr iter = IntPtr.Zero;
+            try {
+                iter = Native.leveldb_create_iterator(Handle, options.Handle);
+                for (Native.leveldb_iter_seek_to_first(iter);
+                     Native.leveldb_iter_valid(iter);
+                     Native.leveldb_iter_next(iter)) {
+                    string key = Native.leveldb_iter_key(iter);
+                    string value = Native.leveldb_iter_value(iter);
+                    var kvp = new KeyValuePair<string, string>(key, value);
+                    yield return kvp;
+                }
+            } finally {
+                if (iter != IntPtr.Zero) {
+                    Native.leveldb_iter_destroy(iter);
+                }
+            }
         }
     }
 }

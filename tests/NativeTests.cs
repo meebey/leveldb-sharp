@@ -31,6 +31,7 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace LevelDB
@@ -107,6 +108,36 @@ namespace LevelDB
             Native.leveldb_delete(Database, options, "key1");
             value1 = Native.leveldb_get(Database, options, "key1");
             Assert.IsNull(value1);
+        }
+
+        [Test]
+        public void Enumerator()
+        {
+            var options = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, options, "key1", "value1");
+            Native.leveldb_put(Database, options, "key2", "value2");
+            Native.leveldb_put(Database, options, "key3", "value3");
+
+            var entries = new List<KeyValuePair<string, string>>();
+            var readOptions = Native.leveldb_readoptions_create();
+            IntPtr iter = Native.leveldb_create_iterator(Database, readOptions);
+            for (Native.leveldb_iter_seek_to_first(iter);
+                 Native.leveldb_iter_valid(iter);
+                 Native.leveldb_iter_next(iter)) {
+                string key = Native.leveldb_iter_key(iter);
+                string value = Native.leveldb_iter_value(iter);
+                var entry = new KeyValuePair<string, string>(key, value);
+                entries.Add(entry);
+            }
+            Native.leveldb_iter_destroy(iter);
+
+            Assert.AreEqual(3, entries.Count);
+            Assert.AreEqual("key1",   entries[0].Key);
+            Assert.AreEqual("value1", entries[0].Value);
+            Assert.AreEqual("key2",   entries[1].Key);
+            Assert.AreEqual("value2", entries[1].Value);
+            Assert.AreEqual("key3",   entries[2].Key);
+            Assert.AreEqual("value3", entries[2].Value);
         }
     }
 }
