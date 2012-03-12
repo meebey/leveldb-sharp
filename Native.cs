@@ -323,7 +323,6 @@ namespace LevelDB
                 return null;
             }
             var key = Marshal.PtrToStringAnsi(keyPtr, (int) keyLength);
-            Marshal.FreeHGlobal(keyPtr);
             return key;
         }
 
@@ -338,7 +337,6 @@ namespace LevelDB
                 return null;
             }
             var value = Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
-            Marshal.FreeHGlobal(valuePtr);
             return value;
         }
 
