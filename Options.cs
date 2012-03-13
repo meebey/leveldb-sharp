@@ -34,7 +34,7 @@ namespace LevelDB
 {
     public class Options
     {
-        internal IntPtr Handle { get; set; }
+        public IntPtr Handle { get; private set; }
 
         // const Comparator* comparator;
         // bool create_if_missing;

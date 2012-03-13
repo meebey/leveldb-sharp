@@ -36,7 +36,7 @@ namespace LevelDB
 {
     public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
     {
-        internal IntPtr Handle { get; set; }
+        public IntPtr Handle { get; private set; }
 
         public string this[string key] {
             get {

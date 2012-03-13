@@ -34,7 +34,7 @@ namespace LevelDB
 {
     public class ReadOptions
     {
-        internal IntPtr Handle { get; set; }
+        public IntPtr Handle { get; private set; }
 
         public ReadOptions()
         {

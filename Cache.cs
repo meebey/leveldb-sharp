@@ -34,7 +34,7 @@ namespace LevelDB
 {
     public class Cache
     {
-        internal IntPtr Handle { get; set; }
+        public IntPtr Handle { get; private set; }
         public int Capacity { get; private set; }
 
         public Cache(int capacity)
