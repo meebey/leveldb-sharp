@@ -56,6 +56,7 @@ namespace LevelDB
         [TearDown]
         public void TearDown()
         {
+            Database.Dispose();
             if (Directory.Exists(DatabasePath)) {
                 Directory.Delete(DatabasePath, true);
             }
@@ -65,6 +66,13 @@ namespace LevelDB
         public void Constructor()
         {
             // NOOP, SetUp calls ctor for us
+        }
+
+        [Test]
+        public void Close()
+        {
+            // test double close
+            Database.Dispose();
         }
 
         [Test]
