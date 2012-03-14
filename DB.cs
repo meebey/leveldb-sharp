@@ -130,7 +130,7 @@ namespace LevelDB
 
         public string Get(string key)
         {
-            return Get (null, key);
+            return Get(null, key);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
