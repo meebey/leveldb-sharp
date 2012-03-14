@@ -71,6 +71,15 @@ namespace LevelDB
         }
 
         [Test]
+        public void Reopen()
+        {
+            Native.leveldb_close(Database);
+            var options = Native.leveldb_options_create();
+            Database = Native.leveldb_open(options, DatabasePath);
+            Native.leveldb_get(Database, options, "key1");
+        }
+
+        [Test]
         public void Put()
         {
             var options = Native.leveldb_writeoptions_create();
