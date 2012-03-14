@@ -76,6 +76,14 @@ namespace LevelDB
         }
 
         [Test]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void DisposeChecks()
+        {
+            Database.Dispose();
+            Database.Get("key1");
+        }
+
+        [Test]
         public void Put()
         {
             Database.Put(null, "key1", "value1");

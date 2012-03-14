@@ -37,6 +37,7 @@ namespace LevelDB
     public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
     {
         public IntPtr Handle { get; private set; }
+        bool Disposed { get; set; }
 
         public string this[string key] {
             get {
@@ -62,6 +63,12 @@ namespace LevelDB
 
         protected virtual void Dispose(bool disposing)
         {
+            var disposed = Disposed;
+            if (disposed) {
+                return;
+            }
+            Disposed = true;
+
             if (disposing) {
                 // free managed
             }
@@ -86,6 +93,7 @@ namespace LevelDB
 
         public void Put(WriteOptions options, string key, string value)
         {
+            CheckDisposed();
             if (options == null) {
                 options = new WriteOptions();
             }
@@ -99,6 +107,7 @@ namespace LevelDB
 
         public void Delete(WriteOptions options, string key)
         {
+            CheckDisposed();
             if (options == null) {
                 options = new WriteOptions();
             }
@@ -112,6 +121,7 @@ namespace LevelDB
 
         public string Get(ReadOptions options, string key)
         {
+            CheckDisposed();
             if (options == null) {
                 options = new ReadOptions();
             }
@@ -130,6 +140,7 @@ namespace LevelDB
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
+            CheckDisposed();
             var options = new ReadOptions();
             IntPtr iter = IntPtr.Zero;
             try {
@@ -147,6 +158,14 @@ namespace LevelDB
                     Native.leveldb_iter_destroy(iter);
                 }
             }
+        }
+
+        void CheckDisposed()
+        {
+            if (!Disposed) {
+                return;
+            }
+            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }
