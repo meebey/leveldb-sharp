@@ -66,8 +66,10 @@ namespace LevelDB
                 // free managed
             }
             // free unmanaged
-            if (Handle != IntPtr.Zero) {
-                Native.leveldb_close(Handle);
+            var handle = Handle;
+            if (handle != IntPtr.Zero) {
+                Handle = IntPtr.Zero;
+                Native.leveldb_close(handle);
             }
         }
 
