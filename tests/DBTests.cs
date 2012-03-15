@@ -138,5 +138,23 @@ namespace LevelDB
             Assert.AreEqual("key3", entries[2].Key);
             Assert.AreEqual("value3", entries[2].Value);
         }
+
+        [Test]
+        public void Cache()
+        {
+            Database.Dispose();
+
+            // open the DB with a cache that is not owned by LevelDB, then
+            // close DB and then free the cache
+            var options = new Options() {
+                BlockCache = new Cache(64)
+            };
+            Database = new DB(options, DatabasePath);
+            options = null;
+            GC.Collect();
+            Database.Put("key1", "value1");
+            Database.Dispose();
+            GC.Collect();
+        }
     }
 }

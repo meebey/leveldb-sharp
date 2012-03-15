@@ -34,6 +34,8 @@ namespace LevelDB
 {
     public class Options
     {
+        Cache f_BlockCache;
+
         public IntPtr Handle { get; private set; }
 
         // const Comparator* comparator;
@@ -72,10 +74,13 @@ namespace LevelDB
         // Cache* block_cache;
         public Cache BlockCache {
             set {
+                // keep a reference to Cache so it doesn't get GCed
+                f_BlockCache = value;
                 if (value == null) {
-                    return;
+                    Native.leveldb_options_set_cache(Handle, IntPtr.Zero);
+                } else {
+                    Native.leveldb_options_set_cache(Handle, value.Handle);
                 }
-                Native.leveldb_options_set_cache(Handle, value.Handle);
             }
         }
 
@@ -100,4 +105,3 @@ namespace LevelDB
         }
     }
 }
-

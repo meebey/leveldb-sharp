@@ -148,5 +148,22 @@ namespace LevelDB
             Assert.AreEqual("key3",   entries[2].Key);
             Assert.AreEqual("value3", entries[2].Value);
         }
+
+        [Test]
+        public void Cache()
+        {
+            Native.leveldb_close(Database);
+
+            // open the DB with a cache that is not owned by LevelDB, then
+            // close DB and then free the cache
+            var options = Native.leveldb_options_create();
+            var cache = Native.leveldb_cache_create_lru((UIntPtr) 64);
+            Native.leveldb_options_set_cache(options, cache);
+            Database = Native.leveldb_open(options, DatabasePath);
+            Native.leveldb_close(Database);
+            Database = IntPtr.Zero;
+
+            Native.leveldb_cache_destroy(cache);
+        }
     }
 }

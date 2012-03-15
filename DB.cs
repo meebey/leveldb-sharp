@@ -37,6 +37,7 @@ namespace LevelDB
     public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
     {
         public IntPtr Handle { get; private set; }
+        Options Options { get; set; }
         bool Disposed { get; set; }
 
         public string this[string key] {
@@ -53,6 +54,9 @@ namespace LevelDB
             if (options == null) {
                 options = new Options();
             }
+            // keep a reference to options as it might contain a cache object
+            // which needs to stay alive as long as the DB is not closed
+            Options = options;
             Handle = Native.leveldb_open(options.Handle, path);
         }
 
@@ -71,6 +75,7 @@ namespace LevelDB
 
             if (disposing) {
                 // free managed
+                Options = null;
             }
             // free unmanaged
             var handle = Handle;
