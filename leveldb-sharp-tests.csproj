@@ -43,6 +43,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="tests\NativeTests.cs" />
     <Compile Include="tests\DBTests.cs" />
+    <Compile Include="AssemblyVersion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

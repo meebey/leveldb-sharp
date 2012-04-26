@@ -32,4 +32,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyCopyright("Copyright (c) 2011 The LevelDB Authors, Copyright (c) 2012 Mirco Bauer <meebey@meebey.net>")]
+[assembly: AssemblyTitle("leveldb-sharp")]
+[assembly: AssemblyDescription("portable C# binding for LevelDB")]
+[assembly: AssemblyVersion("1.2")]

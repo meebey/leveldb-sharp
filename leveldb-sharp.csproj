@@ -39,11 +39,13 @@
     <Compile Include="Cache.cs" />
     <Compile Include="WriteOptions.cs" />
     <Compile Include="ReadOptions.cs" />
+    <Compile Include="AssemblyVersion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="leveldb-sharp.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="AssemblyVersion.cs.in" />
   </ItemGroup>
 </Project>

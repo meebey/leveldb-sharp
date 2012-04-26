@@ -1,3 +1,16 @@
+autom4te.cache/
 bin/
+test-results/
+aclocal.m4
+Makefile
+Makefile.in
+config.guess
+config.log
+config.status
+config.sub
+configure
+install-sh
+missing
+leveldb-sharp.pc
 *.pidb
 *.userprefs
