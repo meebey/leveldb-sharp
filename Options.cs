@@ -34,7 +34,9 @@ namespace LevelDB
 {
     public class Options
     {
+#pragma warning disable 414
         Cache f_BlockCache;
+#pragma warning restore 414
 
         public IntPtr Handle { get; private set; }
 
