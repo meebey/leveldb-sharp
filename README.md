@@ -37,6 +37,7 @@ Currently leveldb-sharp lacks:
 ## Projects using leveldb-sharp ##
 
  * [Smuxi IRC Client][Smuxi]
+ * [Dazzle database][Dazzle]
 
  [LevelDB library]: http://code.google.com/p/leveldb/
  [low-level function calls]: https://github.com/meebey/leveldb-sharp/blob/master/Native.cs
@@ -44,4 +45,5 @@ Currently leveldb-sharp lacks:
  [leveldb-sharp-1.2.0.tar.gz]: http://www.meebey.net/projects/leveldb-sharp/downloads/leveldb-sharp-1.2.0.tar.gz
  [github]: https://github.com/meebey/leveldb-sharp
  [Smuxi]: http://www.smuxi.org/ "Smuxi IRC Client"
+ [Dazzle]: https://github.com/kellabyte/Dazzle
 
