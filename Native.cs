@@ -364,6 +364,38 @@ extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
         public static extern void leveldb_cache_destroy(IntPtr cache);
 #endregion
 
+#region Env
+        // extern leveldb_env_t* leveldb_create_default_env();
+        // extern void leveldb_env_destroy(leveldb_env_t*);
+#endregion
+
+#region Utility
+        /// <summary>
+        /// Calls free(ptr).
+        /// REQUIRES: ptr was malloc()-ed and returned by one of the routines
+        /// in this file.  Note that in certain cases (typically on Windows),
+        /// you may need to call this routine instead of free(ptr) to dispose
+        /// of malloc()-ed memory returned by this library.
+        /// </summary>
+        // extern void leveldb_free(void* ptr);
+        [DllImport("leveldb")]
+        public static extern void leveldb_free(IntPtr ptr);
+
+        /// <summary>
+        /// Return the major version number for this release.
+        /// </summary>
+        // extern int leveldb_major_version();
+        [DllImport("leveldb")]
+        public static extern int leveldb_major_version();
+
+        /// <summary>
+        /// Return the minor version number for this release.
+        /// </summary>
+        // extern int leveldb_minor_version();
+        [DllImport("leveldb")]
+        public static extern int leveldb_minor_version();
+#endregion
+
         public static void Dump(IntPtr db)
         {
             var options = Native.leveldb_readoptions_create();

@@ -205,5 +205,15 @@ namespace LevelDB
             // release snapshot
             Native.leveldb_release_snapshot(Database, snapshot);
         }
+
+        [Test]
+        public void Version()
+        {
+            var major = Native.leveldb_major_version();
+            Assert.Greater(major, 0);
+            var minor = Native.leveldb_minor_version();
+            Assert.Greater(minor, 0);
+            Console.WriteLine("LevelDB version: {0}.{1}", major, minor);
+        }
     }
 }
