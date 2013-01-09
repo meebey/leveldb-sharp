@@ -105,6 +105,13 @@ namespace LevelDB
             Database.Put(null, "key3", "value3");
             var value3 = Database.Get(null, "key3");
             Assert.AreEqual("value3", value3);
+
+            // verify checksum
+            var options = new ReadOptions() {
+                VerifyChecksums = true
+            };
+            value1 = Database.Get(options, "key1");
+            Assert.AreEqual("value1", value1);
         }
 
         [Test]

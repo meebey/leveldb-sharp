@@ -260,8 +260,9 @@ namespace LevelDB
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_destroy(IntPtr readOptions);
 
-        // TODO:
         // extern void leveldb_readoptions_set_verify_checksums(leveldb_readoptions_t*, unsigned char);
+        [DllImport("leveldb")]
+        public static extern void leveldb_readoptions_set_verify_checksums(IntPtr readOptions, bool value);
 
         // extern void leveldb_readoptions_set_snapshot(leveldb_readoptions_t*, const leveldb_snapshot_t*);
         [DllImport("leveldb")]

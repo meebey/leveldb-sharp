@@ -104,6 +104,11 @@ namespace LevelDB
             Native.leveldb_put(Database, options, "key3", "value3");
             var value3 = Native.leveldb_get(Database, options, "key3");
             Assert.AreEqual("value3", value3);
+
+            // verify checksums
+            Native.leveldb_readoptions_set_verify_checksums(options, true);
+            value1 = Native.leveldb_get(Database, options, "key1");
+            Assert.AreEqual("value1", value1);
         }
 
         [Test]

@@ -36,6 +36,17 @@ namespace LevelDB
     {
         public IntPtr Handle { get; private set; }
 
+        /// <summary>
+        /// May be set to true to force checksum verification of all data that
+        /// is read from the file system on behalf of a particular read.
+        /// By default, no such verification is done.
+        /// </summary>
+        public bool VerifyChecksums {
+            set {
+                Native.leveldb_readoptions_set_verify_checksums(Handle, value);
+            }
+        }
+
         public Snapshot Snapshot {
             set {
                 if (value == null) {
