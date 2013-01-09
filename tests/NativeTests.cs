@@ -147,10 +147,10 @@ namespace LevelDB
         [Test]
         public void Enumerator()
         {
-            var options = Native.leveldb_writeoptions_create();
-            Native.leveldb_put(Database, options, "key1", "value1");
-            Native.leveldb_put(Database, options, "key2", "value2");
-            Native.leveldb_put(Database, options, "key3", "value3");
+            var writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key1", "value1");
+            Native.leveldb_put(Database, writeOptions, "key2", "value2");
+            Native.leveldb_put(Database, writeOptions, "key3", "value3");
 
             var entries = new List<KeyValuePair<string, string>>();
             var readOptions = Native.leveldb_readoptions_create();
@@ -173,6 +173,8 @@ namespace LevelDB
             Assert.AreEqual("value2", entries[1].Value);
             Assert.AreEqual("key3",   entries[2].Key);
             Assert.AreEqual("value3", entries[2].Value);
+
+            Native.leveldb_writeoptions_destroy(writeOptions);
         }
 
         [Test]
