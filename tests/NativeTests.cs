@@ -215,5 +215,11 @@ namespace LevelDB
             Assert.Greater(minor, 0);
             Console.WriteLine("LevelDB version: {0}.{1}", major, minor);
         }
+
+        [Test]
+        public void CompactRange()
+        {
+            Native.leveldb_compact_range(Database, null, null);
+        }
     }
 }

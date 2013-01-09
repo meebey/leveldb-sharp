@@ -18,6 +18,7 @@ leveldb-sharp offers:
    * ReadOptions/WriteOptions/Options API
    * Cache API
    * Snapshot API
+   * Compact range API
  * Allows combined use of low-level and high-level APIs
  * NUnit test-case coverage
 
@@ -28,7 +29,6 @@ Currently leveldb-sharp lacks:
  * high-level iterator API
  * writebatch API
  * comparator API
- * compact range API
 
 ## Download ##
 

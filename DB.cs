@@ -171,6 +171,17 @@ namespace LevelDB
             return new Snapshot(this);
         }
 
+        public void Compact()
+        {
+            CompactRange(null, null);
+        }
+
+        public void CompactRange(string startKey, string limitKey)
+        {
+            CheckDisposed();
+            Native.leveldb_compact_range(Handle, startKey, limitKey);
+        }
+
         void CheckDisposed()
         {
             if (!Disposed) {

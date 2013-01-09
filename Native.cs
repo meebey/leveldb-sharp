@@ -48,6 +48,9 @@ namespace LevelDB
 
         static UIntPtr GetStringLength(string value)
         {
+            if (value == null || value.Length == 0) {
+                return UIntPtr.Zero;
+            }
             return new UIntPtr((uint) Encoding.UTF8.GetByteCount(value));
         }
 
@@ -140,6 +143,50 @@ namespace LevelDB
         // extern void leveldb_release_snapshot(leveldb_t* db, const leveldb_snapshot_t* snapshot);
         [DllImport("leveldb")]
         public static extern void leveldb_release_snapshot(IntPtr db, IntPtr snapshot);
+
+        /// <summary>
+        /// Returns NULL if property name is unknown.
+        /// Else returns a pointer to a malloc()-ed null-terminated value.
+        /// </summary>
+        // extern char* leveldb_property_value(leveldb_t* db, const char* propname);
+
+        // extern void leveldb_approximate_sizes(
+        //     leveldb_t* db, int num_ranges,
+        //     const char* const* range_start_key,
+        //     const size_t* range_start_key_len,
+        //     const char* const* range_limit_key,
+        //     const size_t* range_limit_key_len,
+        //     uint64_t* sizes);
+
+        /// <summary>
+        /// Compact the underlying storage for the key range [startKey,limitKey].
+        /// In particular, deleted and overwritten versions are discarded,
+        /// and the data is rearranged to reduce the cost of operations
+        /// needed to access the data.  This operation should typically only
+        /// be invoked by users who understand the underlying implementation.
+        ///
+        /// startKey==null is treated as a key before all keys in the database.
+        /// limitKey==null is treated as a key after all keys in the database.
+        /// Therefore the following call will compact the entire database:
+        ///    leveldb_compact_range(db, null, null);
+        /// </summary>
+        // extern void leveldb_compact_range(leveldb_t* db,
+        //     const char* start_key, size_t start_key_len,
+        //     const char* limit_key, size_t limit_key_len);
+        [DllImport("leveldb")]
+        public static extern void leveldb_compact_range(IntPtr db,
+                                                        string startKey,
+                                                        UIntPtr startKeyLen,
+                                                        string limitKey,
+                                                        UIntPtr limitKeyLen);
+        public static void leveldb_compact_range(IntPtr db,
+                                                 string startKey,
+                                                 string limitKey)
+        {
+            leveldb_compact_range(db,
+                                  startKey, GetStringLength(startKey),
+                                  limitKey, GetStringLength(limitKey));
+        }
 
 #region Options
         // extern leveldb_options_t* leveldb_options_create();

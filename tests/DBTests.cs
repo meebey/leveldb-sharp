@@ -207,5 +207,11 @@ namespace LevelDB
             // release snapshot
             // GC calls ~Snapshot() for us
         }
+
+        [Test]
+        public void Compact()
+        {
+            Database.Compact();
+        }
     }
 }
