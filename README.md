@@ -15,7 +15,7 @@ leveldb-sharp offers:
  * [low-level function calls] to LevelDB
  * [high-level object oriented API] with .NET enrichments (IEnumerable, IDisposable)
    * DB API
-   * Options API
+   * ReadOptions/WriteOptions/Options API
    * Cache API
    * Snapshot API
  * Allows combined use of low-level and high-level APIs
