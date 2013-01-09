@@ -1,6 +1,6 @@
 //  leveldb-sharp
 // 
-//  Copyright (c) 2012, Mirco Bauer <meebey@meebey.net>
+//  Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 // 
 //  Redistribution and use in source and binary forms, with or without
