@@ -74,9 +74,13 @@ namespace LevelDB
         public void Reopen()
         {
             Native.leveldb_close(Database);
+            Database = IntPtr.Zero;
+
             var options = Native.leveldb_options_create();
             Database = Native.leveldb_open(options, DatabasePath);
+            var readOptions = Native.leveldb_readoptions_create();
             Native.leveldb_get(Database, options, "key1");
+            Native.leveldb_options_destroy(readOptions);
         }
 
         [Test]
