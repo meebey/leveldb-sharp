@@ -49,7 +49,10 @@ namespace LevelDB
 
         ~Snapshot()
         {
-            Native.leveldb_release_snapshot(DB.Handle, Handle);
+            var db = DB.Handle;
+            if (db != IntPtr.Zero) {
+                Native.leveldb_release_snapshot(db, Handle);
+            }
         }
     }
 }
