@@ -17,6 +17,7 @@ leveldb-sharp offers:
    * DB API
    * Options API
    * Cache API
+   * Snapshot API
  * Allows combined use of low-level and high-level APIs
  * NUnit test-case coverage
 

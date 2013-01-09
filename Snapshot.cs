@@ -1,12 +1,12 @@
 //  leveldb-sharp
-// 
-//  Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
+//
+//  Copyright (c) 2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
-// 
+//
 //  Redistribution and use in source and binary forms, with or without
 //  modification, are permitted provided that the following conditions are
 //  met:
-// 
+//
 //     * Redistributions of source code must retain the above copyright
 //       notice, this list of conditions and the following disclaimer.
 //     * Redistributions in binary form must reproduce the above
@@ -16,7 +16,7 @@
 //     * Neither the name of Google Inc. nor the names of its
 //       contributors may be used to endorse or promote products derived from
 //       this software without specific prior written permission.
-// 
+//
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -32,28 +32,24 @@ using System;
 
 namespace LevelDB
 {
-    public class ReadOptions
+    public class Snapshot
     {
         public IntPtr Handle { get; private set; }
+        DB DB { get; set; }
 
-        public Snapshot Snapshot {
-            set {
-                if (value == null) {
-                    Native.leveldb_readoptions_set_snapshot(Handle, IntPtr.Zero);
-                } else {
-                    Native.leveldb_readoptions_set_snapshot(Handle, value.Handle);
-                }
+        public Snapshot(DB db)
+        {
+            if (db == null) {
+                throw new ArgumentNullException("db");
             }
+
+            DB = db;
+            Handle = Native.leveldb_create_snapshot(db.Handle);
         }
 
-        public ReadOptions()
+        ~Snapshot()
         {
-            Handle = Native.leveldb_readoptions_create();
-        }
-
-        ~ReadOptions()
-        {
-            Native.leveldb_readoptions_destroy(Handle);
+            Native.leveldb_release_snapshot(DB.Handle, Handle);
         }
     }
 }

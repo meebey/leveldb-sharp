@@ -1,6 +1,6 @@
 //  leveldb-sharp
 // 
-//  Copyright (c) 2012, Mirco Bauer <meebey@meebey.net>
+//  Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 // 
 //  Redistribution and use in source and binary forms, with or without
@@ -155,6 +155,38 @@ namespace LevelDB
             Database.Put("key1", "value1");
             Database.Dispose();
             GC.Collect();
+        }
+
+        [Test]
+        public void Snapshot()
+        {
+            // modify db
+            Database.Put("key1", "value1");
+
+            // create snapshot
+            var snapshot = Database.CreateSnapshot();
+
+            // modify db again
+            Database.Put("key2", "value2");
+
+            // read from snapshot
+            var readOptions = new ReadOptions() {
+                Snapshot = snapshot
+            };
+            var val1 = Database.Get(readOptions, "key1");
+            Assert.AreEqual("value1", val1);
+            var val2 = Database.Get(readOptions, "key2");
+            Assert.IsNull(val2);
+
+            // read from non-snapshot
+            readOptions.Snapshot = null;
+            val1 = Database.Get(readOptions, "key1");
+            Assert.AreEqual("value1", val1);
+            val2 = Database.Get(readOptions, "key2");
+            Assert.AreEqual("value2", val2);
+
+            // release snapshot
+            // GC calls ~Snapshot() for us
         }
     }
 }

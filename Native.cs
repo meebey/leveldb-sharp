@@ -1,6 +1,6 @@
 // leveldb-sharp
 //
-// Copyright (c) 2012 Mirco Bauer <meebey@meebey.net>
+// Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 // Copyright (c) 2011 The LevelDB Authors
 // All rights reserved.
 //
@@ -133,6 +133,14 @@ namespace LevelDB
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_create_iterator(IntPtr db, IntPtr readOptions);
 
+        // extern const leveldb_snapshot_t* leveldb_create_snapshot(leveldb_t* db);
+        [DllImport("leveldb")]
+        public static extern IntPtr leveldb_create_snapshot(IntPtr db);
+
+        // extern void leveldb_release_snapshot(leveldb_t* db, const leveldb_snapshot_t* snapshot);
+        [DllImport("leveldb")]
+        public static extern void leveldb_release_snapshot(IntPtr db, IntPtr snapshot);
+
 #region Options
         // extern leveldb_options_t* leveldb_options_create();
         [DllImport("leveldb")]
@@ -252,14 +260,12 @@ namespace LevelDB
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_destroy(IntPtr readOptions);
 
-        /*
-        extern void leveldb_readoptions_set_verify_checksums(
-            leveldb_readoptions_t*,
-            unsigned char);
-        extern void leveldb_readoptions_set_snapshot(
-            leveldb_readoptions_t*,
-            const leveldb_snapshot_t*);
-        */
+        // TODO:
+        // extern void leveldb_readoptions_set_verify_checksums(leveldb_readoptions_t*, unsigned char);
+
+        // extern void leveldb_readoptions_set_snapshot(leveldb_readoptions_t*, const leveldb_snapshot_t*);
+        [DllImport("leveldb")]
+        public static extern void leveldb_readoptions_set_snapshot(IntPtr readOptions, IntPtr snapshot);
 
         // extern void leveldb_readoptions_set_fill_cache(leveldb_readoptions_t*, unsigned char);
         [DllImport("leveldb")]

@@ -1,6 +1,6 @@
 // leveldb-sharp
 //
-// Copyright (c) 2012 Mirco Bauer <meebey@meebey.net>
+// Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -164,6 +164,32 @@ namespace LevelDB
             Database = IntPtr.Zero;
 
             Native.leveldb_cache_destroy(cache);
+        }
+
+        [Test]
+        public void Snapshot()
+        {
+            // modify db
+            var writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key1", "value1");
+
+            // create snapshot
+            var snapshot = Native.leveldb_create_snapshot(Database);
+
+            // modify db again
+            writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key2", "value2");
+
+            // read from snapshot
+            var readOptions = Native.leveldb_readoptions_create();
+            Native.leveldb_readoptions_set_snapshot(readOptions, snapshot);
+            var val1 = Native.leveldb_get(Database, readOptions, "key1");
+            Assert.AreEqual("value1", val1);
+            var val2 = Native.leveldb_get(Database, readOptions, "key2");
+            Assert.IsNull(val2);
+
+            // release snapshot
+            Native.leveldb_release_snapshot(Database, snapshot);
         }
     }
 }
