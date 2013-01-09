@@ -181,6 +181,7 @@ namespace LevelDB
         public void Cache()
         {
             Native.leveldb_close(Database);
+            Database = IntPtr.Zero;
 
             // open the DB with a cache that is not owned by LevelDB, then
             // close DB and then free the cache
