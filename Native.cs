@@ -54,6 +54,7 @@ namespace LevelDB
             return new UIntPtr((uint) Encoding.UTF8.GetByteCount(value));
         }
 
+#region DB operations
         // extern leveldb_t* leveldb_open(const leveldb_options_t* options, const char* name, char** errptr);
         [DllImport("leveldb")]
         public static extern IntPtr leveldb_open(IntPtr options, string name, out string error);
@@ -187,6 +188,29 @@ namespace LevelDB
                                   startKey, GetStringLength(startKey),
                                   limitKey, GetStringLength(limitKey));
         }
+#endregion
+
+#region Management operations
+        // extern void leveldb_destroy_db(const leveldb_options_t* options, const char* name, char** errptr);
+        [DllImport("leveldb")]
+        public static extern void leveldb_destroy_db(IntPtr options, string path, out string error);
+        public static void leveldb_destroy_db(IntPtr options, string path)
+        {
+            string error;
+            leveldb_destroy_db(options, path, out error);
+            CheckError(error);
+        }
+
+        // extern void leveldb_repair_db(const leveldb_options_t* options, const char* name, char** errptr);
+        [DllImport("leveldb")]
+        public static extern void leveldb_repair_db(IntPtr options, string path, out string error);
+        public static void leveldb_repair_db(IntPtr options, string path)
+        {
+            string error;
+            leveldb_repair_db(options, path, out error);
+            CheckError(error);
+        }
+#endregion
 
 #region Options
         // extern leveldb_options_t* leveldb_options_create();

@@ -56,7 +56,10 @@ namespace LevelDB
         [TearDown]
         public void TearDown()
         {
-            Database.Dispose();
+            // some test-cases tear-down them self
+            if (Database != null) {
+                Database.Dispose();
+            }
             if (Directory.Exists(DatabasePath)) {
                 Directory.Delete(DatabasePath, true);
             }
@@ -212,6 +215,24 @@ namespace LevelDB
         public void Compact()
         {
             Database.Compact();
+        }
+
+        [Test]
+        public void Destroy()
+        {
+            Database.Dispose();
+            Database = null;
+
+            DB.Destroy(null, DatabasePath);
+        }
+
+        [Test]
+        public void Repair()
+        {
+            Database.Dispose();
+            Database = null;
+
+            DB.Repair(null, DatabasePath);
         }
     }
 }

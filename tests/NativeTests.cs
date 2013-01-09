@@ -221,5 +221,25 @@ namespace LevelDB
         {
             Native.leveldb_compact_range(Database, null, null);
         }
+
+        [Test]
+        public void Destroy()
+        {
+            Native.leveldb_close(Database);
+            Database = IntPtr.Zero;
+
+            var options = Native.leveldb_options_create();
+            Native.leveldb_destroy_db(options, DatabasePath);
+        }
+
+        [Test]
+        public void Repair()
+        {
+            Native.leveldb_close(Database);
+            Database = IntPtr.Zero;
+
+            var options = Native.leveldb_options_create();
+            Native.leveldb_repair_db(options, DatabasePath);
+        }
     }
 }

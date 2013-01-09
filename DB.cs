@@ -96,6 +96,28 @@ namespace LevelDB
             return new DB(options, path);
         }
 
+        public static void Repair(Options options, string path)
+        {
+            if (path == null) {
+                throw new ArgumentNullException("path");
+            }
+            if (options == null) {
+                options = new Options();
+            }
+            Native.leveldb_repair_db(options.Handle, path);
+        }
+
+        public static void Destroy(Options options, string path)
+        {
+            if (path == null) {
+                throw new ArgumentNullException("path");
+            }
+            if (options == null) {
+                options = new Options();
+            }
+            Native.leveldb_destroy_db(options.Handle, path);
+        }
+
         public void Put(WriteOptions options, string key, string value)
         {
             CheckDisposed();
