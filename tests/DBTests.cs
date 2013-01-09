@@ -89,6 +89,11 @@ namespace LevelDB
             Database.Put(null, "key1", "value1");
             Database.Put(null, "key2", "value2");
             Database.Put(null, "key3", "value3");
+
+            var options = new WriteOptions() {
+                Sync = true
+            };
+            Database.Put (options, "key4", "value4");
         }
 
         [Test]

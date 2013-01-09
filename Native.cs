@@ -282,10 +282,9 @@ namespace LevelDB
         [DllImport("leveldb")]
         public static extern void leveldb_writeoptions_destroy(IntPtr writeOptions);
 
-        /*
-        extern void leveldb_writeoptions_set_sync(
-            leveldb_writeoptions_t*, unsigned char);
-        */
+        // extern void leveldb_writeoptions_set_sync(leveldb_writeoptions_t*, unsigned char);
+        [DllImport("leveldb")]
+        public static extern void leveldb_writeoptions_set_sync(IntPtr writeOptions, bool value);
 #endregion
 
 #region Iterator

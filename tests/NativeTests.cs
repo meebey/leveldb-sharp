@@ -86,6 +86,10 @@ namespace LevelDB
             Native.leveldb_put(Database, options, "key1", "value1");
             Native.leveldb_put(Database, options, "key2", "value2");
             Native.leveldb_put(Database, options, "key3", "value3");
+
+            // sync
+            Native.leveldb_writeoptions_set_sync(options, true);
+            Native.leveldb_put(Database, options, "key4", "value4");
         }
 
         [Test]
