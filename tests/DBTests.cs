@@ -117,6 +117,13 @@ namespace LevelDB
             };
             value1 = Database.Get(options, "key1");
             Assert.AreEqual("value1", value1);
+
+            // no fill cache
+            options = new ReadOptions() {
+                FillCache = false
+            };
+            value2 = Database.Get(options, "key2");
+            Assert.AreEqual("value2", value2);
         }
 
         [Test]

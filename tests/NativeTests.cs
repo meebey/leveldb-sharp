@@ -113,6 +113,11 @@ namespace LevelDB
             Native.leveldb_readoptions_set_verify_checksums(options, true);
             value1 = Native.leveldb_get(Database, options, "key1");
             Assert.AreEqual("value1", value1);
+
+            // no fill cache
+            Native.leveldb_readoptions_set_fill_cache(options, false);
+            value2 = Native.leveldb_get(Database, options, "key2");
+            Assert.AreEqual("value2", value2);
         }
 
         [Test]

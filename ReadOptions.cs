@@ -47,6 +47,17 @@ namespace LevelDB
             }
         }
 
+        /// <summary>
+        /// When performing a bulk read, the application may wish to disable
+        /// caching so that the data processed by the bulk read does not end up
+        /// displacing most of the cached contents.
+        /// </summary>
+        public bool FillCache {
+            set {
+                Native.leveldb_readoptions_set_fill_cache(Handle, value);
+            }
+        }
+
         public Snapshot Snapshot {
             set {
                 if (value == null) {
