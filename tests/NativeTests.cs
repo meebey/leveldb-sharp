@@ -123,14 +123,18 @@ namespace LevelDB
         [Test]
         public void Delete()
         {
-            var options = Native.leveldb_writeoptions_create();
+            var writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key1", "value1");
 
-            Native.leveldb_put(Database, options, "key1", "value1");
-            var value1 = Native.leveldb_get(Database, options, "key1");
+            var readOptions = Native.leveldb_readoptions_create();
+            var value1 = Native.leveldb_get(Database, readOptions, "key1");
             Assert.AreEqual("value1", value1);
-            Native.leveldb_delete(Database, options, "key1");
-            value1 = Native.leveldb_get(Database, options, "key1");
+            Native.leveldb_delete(Database, writeOptions, "key1");
+            value1 = Native.leveldb_get(Database, readOptions, "key1");
             Assert.IsNull(value1);
+
+            Native.leveldb_writeoptions_destroy(writeOptions);
+            Native.leveldb_readoptions_destroy(readOptions);
         }
 
         [Test]
