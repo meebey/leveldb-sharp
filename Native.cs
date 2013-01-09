@@ -264,13 +264,13 @@ namespace LevelDB
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_set_verify_checksums(IntPtr readOptions, bool value);
 
-        // extern void leveldb_readoptions_set_snapshot(leveldb_readoptions_t*, const leveldb_snapshot_t*);
-        [DllImport("leveldb")]
-        public static extern void leveldb_readoptions_set_snapshot(IntPtr readOptions, IntPtr snapshot);
-
         // extern void leveldb_readoptions_set_fill_cache(leveldb_readoptions_t*, unsigned char);
         [DllImport("leveldb")]
         public static extern void leveldb_readoptions_set_fill_cache(IntPtr readOptions, bool value);
+
+        // extern void leveldb_readoptions_set_snapshot(leveldb_readoptions_t*, const leveldb_snapshot_t*);
+        [DllImport("leveldb")]
+        public static extern void leveldb_readoptions_set_snapshot(IntPtr readOptions, IntPtr snapshot);
 #endregion
 
 #region Write Options
