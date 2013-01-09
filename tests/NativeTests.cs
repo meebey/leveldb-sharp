@@ -58,6 +58,7 @@ namespace LevelDB
         {
             if (Database != IntPtr.Zero) {
                 Native.leveldb_close(Database);
+                Database = IntPtr.Zero;
             }
             if (Directory.Exists(DatabasePath)) {
                 Directory.Delete(DatabasePath, true);
@@ -122,6 +123,8 @@ namespace LevelDB
             Native.leveldb_readoptions_set_fill_cache(options, false);
             value2 = Native.leveldb_get(Database, options, "key2");
             Assert.AreEqual("value2", value2);
+
+            Native.leveldb_readoptions_destroy(options);
         }
 
         [Test]
@@ -161,6 +164,7 @@ namespace LevelDB
                 entries.Add(entry);
             }
             Native.leveldb_iter_destroy(iter);
+            Native.leveldb_readoptions_destroy(readOptions);
 
             Assert.AreEqual(3, entries.Count);
             Assert.AreEqual("key1",   entries[0].Key);
@@ -186,6 +190,7 @@ namespace LevelDB
             Database = IntPtr.Zero;
 
             Native.leveldb_cache_destroy(cache);
+            Native.leveldb_options_destroy(options);
         }
 
         [Test]
@@ -194,6 +199,7 @@ namespace LevelDB
             // modify db
             var writeOptions = Native.leveldb_writeoptions_create();
             Native.leveldb_put(Database, writeOptions, "key1", "value1");
+            Native.leveldb_writeoptions_destroy(writeOptions);
 
             // create snapshot
             var snapshot = Native.leveldb_create_snapshot(Database);
@@ -201,6 +207,7 @@ namespace LevelDB
             // modify db again
             writeOptions = Native.leveldb_writeoptions_create();
             Native.leveldb_put(Database, writeOptions, "key2", "value2");
+            Native.leveldb_writeoptions_destroy(writeOptions);
 
             // read from snapshot
             var readOptions = Native.leveldb_readoptions_create();
@@ -209,9 +216,11 @@ namespace LevelDB
             Assert.AreEqual("value1", val1);
             var val2 = Native.leveldb_get(Database, readOptions, "key2");
             Assert.IsNull(val2);
+            Native.leveldb_readoptions_destroy(readOptions);
 
             // release snapshot
             Native.leveldb_release_snapshot(Database, snapshot);
+            snapshot = IntPtr.Zero;
         }
 
         [Test]
@@ -238,6 +247,7 @@ namespace LevelDB
 
             var options = Native.leveldb_options_create();
             Native.leveldb_destroy_db(options, DatabasePath);
+            Native.leveldb_options_destroy(options);
         }
 
         [Test]
@@ -248,6 +258,7 @@ namespace LevelDB
 
             var options = Native.leveldb_options_create();
             Native.leveldb_repair_db(options, DatabasePath);
+            Native.leveldb_options_destroy(options);
         }
     }
 }
