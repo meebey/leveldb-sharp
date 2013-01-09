@@ -80,8 +80,8 @@ namespace LevelDB
             var options = Native.leveldb_options_create();
             Database = Native.leveldb_open(options, DatabasePath);
             var readOptions = Native.leveldb_readoptions_create();
-            Native.leveldb_get(Database, options, "key1");
-            Native.leveldb_options_destroy(readOptions);
+            Native.leveldb_get(Database, readOptions, "key1");
+            Native.leveldb_readoptions_destroy(readOptions);
         }
 
         [Test]
