@@ -168,23 +168,7 @@ namespace LevelDB
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             CheckDisposed();
-            var options = new ReadOptions();
-            IntPtr iter = IntPtr.Zero;
-            try {
-                iter = Native.leveldb_create_iterator(Handle, options.Handle);
-                for (Native.leveldb_iter_seek_to_first(iter);
-                     Native.leveldb_iter_valid(iter);
-                     Native.leveldb_iter_next(iter)) {
-                    string key = Native.leveldb_iter_key(iter);
-                    string value = Native.leveldb_iter_value(iter);
-                    var kvp = new KeyValuePair<string, string>(key, value);
-                    yield return kvp;
-                }
-            } finally {
-                if (iter != IntPtr.Zero) {
-                    Native.leveldb_iter_destroy(iter);
-                }
-            }
+            return new Iterator(this, null);
         }
 
         public Snapshot CreateSnapshot()

@@ -41,6 +41,7 @@
     <Compile Include="ReadOptions.cs" />
     <Compile Include="AssemblyVersion.cs" />
     <Compile Include="Snapshot.cs" />
+    <Compile Include="Iterator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
