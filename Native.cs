@@ -56,7 +56,7 @@ namespace LevelDB
 
 #region DB operations
         // extern leveldb_t* leveldb_open(const leveldb_options_t* options, const char* name, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_open(IntPtr options, string name, out string error);
         public static IntPtr leveldb_open(IntPtr options, string name)
         {
@@ -67,11 +67,11 @@ namespace LevelDB
         }
 
         // extern void leveldb_close(leveldb_t* db);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_close(IntPtr db);
 
         // extern void leveldb_put(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, const char* val, size_t vallen, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_put(IntPtr db,
                                               IntPtr writeOptions,
                                               string key,
@@ -94,7 +94,7 @@ namespace LevelDB
         }
 
         // extern void leveldb_delete(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_delete(IntPtr db, IntPtr writeOptions, string key, UIntPtr keylen, out string error);
         public static void leveldb_delete(IntPtr db, IntPtr writeOptions, string key)
         {
@@ -105,11 +105,11 @@ namespace LevelDB
         }
 
         // extern void leveldb_write(leveldb_t* db, const leveldb_writeoptions_t* options, leveldb_writebatch_t* batch, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_write(IntPtr db, IntPtr options, IntPtr batch, out string error);
 
         // extern char* leveldb_get(leveldb_t* db, const leveldb_readoptions_t* options, const char* key, size_t keylen, size_t* vallen, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_get(IntPtr db,
                                                 IntPtr readOptions,
                                                 string key,
@@ -134,15 +134,15 @@ namespace LevelDB
         }
 
         // extern leveldb_iterator_t* leveldb_create_iterator(leveldb_t* db, const leveldb_readoptions_t* options);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_create_iterator(IntPtr db, IntPtr readOptions);
 
         // extern const leveldb_snapshot_t* leveldb_create_snapshot(leveldb_t* db);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_create_snapshot(IntPtr db);
 
         // extern void leveldb_release_snapshot(leveldb_t* db, const leveldb_snapshot_t* snapshot);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_release_snapshot(IntPtr db, IntPtr snapshot);
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace LevelDB
         // extern void leveldb_compact_range(leveldb_t* db,
         //     const char* start_key, size_t start_key_len,
         //     const char* limit_key, size_t limit_key_len);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_compact_range(IntPtr db,
                                                         string startKey,
                                                         UIntPtr startKeyLen,
@@ -192,7 +192,7 @@ namespace LevelDB
 
 #region Management operations
         // extern void leveldb_destroy_db(const leveldb_options_t* options, const char* name, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_destroy_db(IntPtr options, string path, out string error);
         public static void leveldb_destroy_db(IntPtr options, string path)
         {
@@ -202,7 +202,7 @@ namespace LevelDB
         }
 
         // extern void leveldb_repair_db(const leveldb_options_t* options, const char* name, char** errptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_repair_db(IntPtr options, string path, out string error);
         public static void leveldb_repair_db(IntPtr options, string path)
         {
@@ -214,15 +214,15 @@ namespace LevelDB
 
 #region Options
         // extern leveldb_options_t* leveldb_options_create();
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_options_create();
 
         // extern void leveldb_options_destroy(leveldb_options_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_destroy(IntPtr options);
 
         // extern void leveldb_options_set_comparator(leveldb_options_t*, leveldb_comparator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_comparator(IntPtr options, IntPtr comparator);
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         // extern void leveldb_options_set_create_if_missing(leveldb_options_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_create_if_missing(IntPtr options, bool value);
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         // extern void leveldb_options_set_error_if_exists(leveldb_options_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_error_if_exists(IntPtr options, bool value);
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace LevelDB
         /// Default: false
         /// </summary>
         // extern void leveldb_options_set_paranoid_checks(leveldb_options_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_paranoid_checks(IntPtr options, bool value);
 
         /// <summary>
@@ -261,11 +261,11 @@ namespace LevelDB
         /// Default: 1000
         /// </summary>
         // extern void leveldb_options_set_max_open_files(leveldb_options_t*, int);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_max_open_files(IntPtr options, int value);
 
         // extern void leveldb_options_set_compression(leveldb_options_t*, int);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_compression(IntPtr options, int value);
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace LevelDB
         /// Default: NULL
         /// </summary>
         // extern void leveldb_options_set_cache(leveldb_options_t*, leveldb_cache_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_cache(IntPtr options, IntPtr cache);
         public static void leveldb_options_set_cache_size(IntPtr options, int capacity)
         {
@@ -324,51 +324,51 @@ namespace LevelDB
 
 #region Read Options
         // extern leveldb_readoptions_t* leveldb_readoptions_create();
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_readoptions_create();
 
         // extern void leveldb_readoptions_destroy(leveldb_readoptions_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_readoptions_destroy(IntPtr readOptions);
 
         // extern void leveldb_readoptions_set_verify_checksums(leveldb_readoptions_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_readoptions_set_verify_checksums(IntPtr readOptions, bool value);
 
         // extern void leveldb_readoptions_set_fill_cache(leveldb_readoptions_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_readoptions_set_fill_cache(IntPtr readOptions, bool value);
 
         // extern void leveldb_readoptions_set_snapshot(leveldb_readoptions_t*, const leveldb_snapshot_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_readoptions_set_snapshot(IntPtr readOptions, IntPtr snapshot);
 #endregion
 
 #region Write Options
         // extern leveldb_writeoptions_t* leveldb_writeoptions_create();
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_writeoptions_create();
 
         // extern void leveldb_writeoptions_destroy(leveldb_writeoptions_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_writeoptions_destroy(IntPtr writeOptions);
 
         // extern void leveldb_writeoptions_set_sync(leveldb_writeoptions_t*, unsigned char);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_writeoptions_set_sync(IntPtr writeOptions, bool value);
 #endregion
 
 #region Iterator
         // extern void leveldb_iter_seek_to_first(leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_seek_to_first(IntPtr iter);
 
         // extern void leveldb_iter_seek_to_last(leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_seek_to_last(IntPtr iter);
 
         // extern void leveldb_iter_seek(leveldb_iterator_t*, const char* k, size_t klen);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_seek(IntPtr iter, string key, UIntPtr keyLength);
         public static void leveldb_iter_seek(IntPtr iter, string key)
         {
@@ -377,19 +377,19 @@ namespace LevelDB
         }
 
         // extern unsigned char leveldb_iter_valid(const leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool leveldb_iter_valid(IntPtr iter);
 
         // extern void leveldb_iter_prev(leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_prev(IntPtr iter);
 
         // extern void leveldb_iter_next(leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_next(IntPtr iter);
 
         // extern const char* leveldb_iter_key(const leveldb_iterator_t*, size_t* klen);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_iter_key(IntPtr iter, out UIntPtr keyLength);
         public static string leveldb_iter_key(IntPtr iter)
         {
@@ -403,7 +403,7 @@ namespace LevelDB
         }
 
         // extern const char* leveldb_iter_value(const leveldb_iterator_t*, size_t* vlen);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_iter_value(IntPtr iter, out UIntPtr valueLength);
         public static string leveldb_iter_value(IntPtr iter)
         {
@@ -417,7 +417,7 @@ namespace LevelDB
         }
 
         // extern void leveldb_iter_destroy(leveldb_iterator_t*);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_destroy(IntPtr iter);
 
         /*
@@ -427,11 +427,11 @@ extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
 
 #region Cache
         // extern leveldb_cache_t* leveldb_cache_create_lru(size_t capacity);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_cache_create_lru(UIntPtr capacity);
 
         // extern void leveldb_cache_destroy(leveldb_cache_t* cache);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_cache_destroy(IntPtr cache);
 #endregion
 
@@ -449,21 +449,21 @@ extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
         /// of malloc()-ed memory returned by this library.
         /// </summary>
         // extern void leveldb_free(void* ptr);
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_free(IntPtr ptr);
 
         /// <summary>
         /// Return the major version number for this release.
         /// </summary>
         // extern int leveldb_major_version();
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern int leveldb_major_version();
 
         /// <summary>
         /// Return the minor version number for this release.
         /// </summary>
         // extern int leveldb_minor_version();
-        [DllImport("leveldb")]
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern int leveldb_minor_version();
 #endregion
 
