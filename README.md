@@ -28,7 +28,7 @@ leveldb-sharp offers:
 Currently leveldb-sharp lacks:
 
  * writebatch API
- * comparator API
+ * comparator API (unsafe code? no thanks...)
 
 ## Download ##
 
