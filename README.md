@@ -32,6 +32,7 @@ Currently leveldb-sharp lacks:
 
 ## Download ##
 
+ * Project website: https://www.meebey.net/projects/leveldb-sharp/
  * Source tarball: [leveldb-sharp-1.2.0.tar.gz]
  * Git repository on github: [meebey/leveldb-sharp][github]
 
