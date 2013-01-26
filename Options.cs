@@ -90,6 +90,7 @@ namespace LevelDB
         // TODO:
         // Env* env;
         // Logger* info_log;
+
         /// <summary>
         /// Amount of data to build up in memory (backed by an unsorted log
         /// on disk) before converting to a sorted on-disk file.
@@ -103,6 +104,11 @@ namespace LevelDB
         /// Default: 4MB
         /// </summary>
         // size_t write_buffer_size;
+        public int WriteBufferSize {
+            set {
+                Native.leveldb_options_set_write_buffer_size(Handle, value);
+            }
+        }
 
         /// <summary>
         /// Number of open files that can be used by the DB.  You may need to
@@ -138,7 +144,6 @@ namespace LevelDB
             }
         }
 
-        // TODO:
         /// <summary>
         /// Approximate size of user data packed per block.  Note that the
         /// block size specified here corresponds to uncompressed data.  The
@@ -148,7 +153,24 @@ namespace LevelDB
         /// Default: 4K
         /// </summary>
         // size_t block_size;
+        public int BlockSize {
+            set {
+                Native.leveldb_options_set_block_size(Handle, value);
+            }
+        }
+
+        /// <summary>
+        /// Number of keys between restart points for delta encoding of keys.
+        /// This parameter can be changed dynamically.  Most clients should
+        /// leave this parameter alone.
+        /// Default: 16
+        /// </summary>
         // int block_restart_interval;
+        public int BlockRestartInterval {
+            set {
+                Native.leveldb_options_set_write_buffer_size(Handle, value);
+            }
+        }
 
         /// <summary>
         /// Each block is individually compressed before being written to

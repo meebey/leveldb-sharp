@@ -349,7 +349,6 @@ namespace LevelDB
             leveldb_options_set_cache(options, cache);
         }
 
-        // TODO:
         /// <summary>
         /// Approximate size of user data packed per block.  Note that the
         /// block size specified here corresponds to uncompressed data.  The
@@ -359,8 +358,13 @@ namespace LevelDB
         /// Default: 4K
         /// </summary>
         // extern void leveldb_options_set_block_size(leveldb_options_t*, size_t);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_options_set_block_size(IntPtr options, UIntPtr size);
+        public static void leveldb_options_set_block_size(IntPtr options, int size)
+        {
+            leveldb_options_set_block_size(options, (UIntPtr) size);
+        }
 
-        // TODO:
         /// <summary>
         /// Amount of data to build up in memory (backed by an unsorted log
         /// on disk) before converting to a sorted on-disk file.
@@ -374,9 +378,22 @@ namespace LevelDB
         /// Default: 4MB
         /// </summary>
         // extern void leveldb_options_set_write_buffer_size(leveldb_options_t*, size_t);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_options_set_write_buffer_size(IntPtr options, UIntPtr size);
+        public static void leveldb_options_set_write_buffer_size(IntPtr options, int size)
+        {
+            leveldb_options_set_write_buffer_size(options, (UIntPtr) size);
+        }
 
-        // TODO:
+        /// <summary>
+        /// Number of keys between restart points for delta encoding of keys.
+        /// This parameter can be changed dynamically.  Most clients should
+        /// leave this parameter alone.
+        /// Default: 16
+        /// </summary>
         // extern void leveldb_options_set_block_restart_interval(leveldb_options_t*, int);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_options_set_block_restart_interval(IntPtr options, int interval);
 #endregion
 
 #region Read Options
@@ -478,9 +495,7 @@ namespace LevelDB
         public static extern void leveldb_iter_destroy(IntPtr iter);
 
         // TODO:
-        /*
-extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
-         */
+        // extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
 #endregion
 
 #region Cache
