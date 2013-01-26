@@ -141,6 +141,27 @@ namespace LevelDB
         }
 
         [Test]
+        public void WriteBatch()
+        {
+            Database.Put("key1", "value1");
+
+            var writeBatch = new WriteBatch().
+                Delete("key1").
+                Put("key2", "value2");
+            Database.Write(writeBatch);
+
+            var value1 = Database.Get("key1");
+            Assert.IsNull(value1);
+            var value2 = Database.Get("key2");
+            Assert.AreEqual("value2", value2);
+
+            writeBatch.Delete("key2").Clear();
+            Database.Write(writeBatch);
+            value2 = Database.Get("key2");
+            Assert.AreEqual("value2", value2);
+        }
+
+        [Test]
         public void Enumerator()
         {
             Database.Put(null, "key1", "value1");

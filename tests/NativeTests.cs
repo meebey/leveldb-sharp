@@ -145,6 +145,34 @@ namespace LevelDB
         }
 
         [Test]
+        public void WriteBatch()
+        {
+            var writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key1", "value1");
+
+            var writeBatch = Native.leveldb_writebatch_create();
+            Native.leveldb_writebatch_delete(writeBatch, "key1");
+            Native.leveldb_writebatch_put(writeBatch, "key2", "value2");
+            Native.leveldb_write(Database, writeOptions, writeBatch);
+
+            var readOptions = Native.leveldb_readoptions_create();
+            var value1 = Native.leveldb_get(Database, readOptions, "key1");
+            Assert.IsNull(value1);
+            var value2 = Native.leveldb_get(Database, readOptions, "key2");
+            Assert.AreEqual("value2", value2);
+
+            Native.leveldb_writebatch_delete(writeBatch, "key2");
+            Native.leveldb_writebatch_clear(writeBatch);
+            Native.leveldb_write(Database, writeOptions, writeBatch);
+            value2 = Native.leveldb_get(Database, readOptions, "key2");
+            Assert.AreEqual("value2", value2);
+
+            Native.leveldb_writebatch_destroy(writeBatch);
+            Native.leveldb_writeoptions_destroy(writeOptions);
+            Native.leveldb_writeoptions_destroy(readOptions);
+        }
+
+        [Test]
         public void Enumerator()
         {
             var writeOptions = Native.leveldb_writeoptions_create();

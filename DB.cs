@@ -146,6 +146,22 @@ namespace LevelDB
             Delete(null, key);
         }
 
+        public void Write(WriteOptions writeOptions, WriteBatch writeBatch)
+        {
+            if (writeOptions == null) {
+                writeOptions = new WriteOptions();
+            }
+            if (writeBatch == null) {
+                throw new ArgumentNullException("writeBatch");
+            }
+            Native.leveldb_write(Handle, writeOptions.Handle, writeBatch.Handle);
+        }
+
+        public void Write(WriteBatch writeBatch)
+        {
+            Write(null, writeBatch);
+        }
+
         public string Get(ReadOptions options, string key)
         {
             CheckDisposed();

@@ -106,7 +106,13 @@ namespace LevelDB
 
         // extern void leveldb_write(leveldb_t* db, const leveldb_writeoptions_t* options, leveldb_writebatch_t* batch, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void leveldb_write(IntPtr db, IntPtr options, IntPtr batch, out string error);
+        public static extern void leveldb_write(IntPtr db, IntPtr writeOptions, IntPtr writeBatch, out string error);
+        public static void leveldb_write(IntPtr db, IntPtr writeOptions, IntPtr writeBatch)
+        {
+            string error;
+            leveldb_write(db, writeOptions, writeBatch, out error);
+            CheckError(error);
+        }
 
         // extern char* leveldb_get(leveldb_t* db, const leveldb_readoptions_t* options, const char* key, size_t keylen, size_t* vallen, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
@@ -210,6 +216,51 @@ namespace LevelDB
             leveldb_repair_db(options, path, out error);
             CheckError(error);
         }
+#endregion
+
+#region Write batch
+        // extern leveldb_writebatch_t* leveldb_writebatch_create();
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr leveldb_writebatch_create();
+
+        // extern void leveldb_writebatch_destroy(leveldb_writebatch_t*);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_writebatch_destroy(IntPtr writeBatch);
+
+        // extern void leveldb_writebatch_clear(leveldb_writebatch_t*);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_writebatch_clear(IntPtr writeBatch);
+
+        // extern void leveldb_writebatch_put(leveldb_writebatch_t*, const char* key, size_t klen, const char* val, size_t vlen);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_writebatch_put(IntPtr writeBatch,
+                                                         string key,
+                                                         UIntPtr keyLength,
+                                                         string value,
+                                                         UIntPtr valueLength);
+        public static void leveldb_writebatch_put(IntPtr writeBatch,
+                                                  string key,
+                                                  string value)
+        {
+            var keyLength = GetStringLength(key);
+            var valueLength = GetStringLength(value);
+            Native.leveldb_writebatch_put(writeBatch,
+                                          key, keyLength,
+                                          value, valueLength);
+        }
+
+        // extern void leveldb_writebatch_delete(leveldb_writebatch_t*, const char* key, size_t klen);
+        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void leveldb_writebatch_delete(IntPtr writeBatch, string key, UIntPtr keylen);
+        public static void leveldb_writebatch_delete(IntPtr writeBatch, string key)
+        {
+            var keyLength = GetStringLength(key);
+            leveldb_writebatch_delete(writeBatch, key, keyLength);
+        }
+
+        // TODO:
+        // extern void leveldb_writebatch_iterate(leveldb_writebatch_t*, void* state, void (*put)(void*, const char* k, size_t klen, const char* v, size_t vlen), void (*deleted)(void*, const char* k, size_t klen));
+
 #endregion
 
 #region Options

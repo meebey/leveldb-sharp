@@ -16,6 +16,7 @@ leveldb-sharp offers:
  * [high-level object oriented API] with .NET enrichments (IEnumerable, IDisposable)
    * DB API
    * ReadOptions/WriteOptions/Options API
+   * Write batch API
    * Iterator API
    * Cache API
    * Snapshot API
@@ -27,7 +28,6 @@ leveldb-sharp offers:
 
 Currently leveldb-sharp lacks:
 
- * writebatch API
  * comparator API (unsafe code? no thanks...)
 
 ## Download ##
