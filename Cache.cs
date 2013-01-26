@@ -32,8 +32,14 @@ using System;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// DB cache
+    /// </summary>
     public class Cache
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
         public int Capacity { get; private set; }
 

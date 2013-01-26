@@ -1,5 +1,6 @@
 //  leveldb-sharp
 //
+//  Copyright (c) 2011 The LevelDB Authors
 //  Copyright (c) 2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 //
@@ -32,8 +33,18 @@ using System;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// Snapshots provide consistent read-only views over the entire state of
+    /// the key-value store. ReadOptions.Snapshot may be non-NULL to indicate
+    /// that a read should operate on a particular version of the DB state.
+    /// If ReadOptions.Snapshot is NULL, the read will operate on an implicit
+    /// snapshot of the current state.
+    /// </summary>
     public class Snapshot
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
         DB DB { get; set; }
 

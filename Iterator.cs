@@ -34,8 +34,20 @@ using System.Collections.Generic;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// DB Iterator
+    /// </summary>
+    /// <remarks>
+    /// This type is not thread safe.
+    ///
+    /// If two threads share this object, they must protect access to it using
+    /// their own locking protocol.
+    /// </remarks>
     public class Iterator : IEnumerator<KeyValuePair<string, string>>
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
         DB DB { get; set; }
         ReadOptions ReadOptions { get; set; }

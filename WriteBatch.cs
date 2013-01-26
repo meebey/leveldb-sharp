@@ -1,5 +1,6 @@
 //  leveldb-sharp
 //
+//  Copyright (c) 2011 The LevelDB Authors
 //  Copyright (c) 2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 //
@@ -32,8 +33,30 @@ using System;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// Note that if the process dies after the Put of key2 but before the
+    /// delete of key1, the same value may be left stored under multiple keys.
+    /// Such problems can be avoided by using the WriteBatch class to
+    /// atomically apply a set of updates.
+    /// The WriteBatch holds a sequence of edits to be made to the database,
+    /// and these edits within the batch are applied in order. Note that we
+    /// called Delete before Put so that if key1 is identical to key2, we do
+    /// not end up erroneously dropping the value entirely.
+    /// Apart from its atomicity benefits, WriteBatch may also be used to speed
+    /// up bulk updates by placing lots of individual mutations into the same
+    /// batch.
+    /// </summary>
+    /// <remarks>
+    /// This type is not thread safe.
+    ///
+    /// If two threads share this object, they must protect access to it using
+    /// their own locking protocol.
+    /// </remarks>
     public class WriteBatch
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
 
         public WriteBatch()

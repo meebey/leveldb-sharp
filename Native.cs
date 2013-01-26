@@ -1,7 +1,7 @@
 // leveldb-sharp
 //
-// Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 // Copyright (c) 2011 The LevelDB Authors
+// Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,9 @@ using System.Runtime.InteropServices;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// Native method P/Invoke declarations for LevelDB
+    /// </summary>
     public static class Native
     {
         static void CheckError(string error)
@@ -151,6 +154,7 @@ namespace LevelDB
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_release_snapshot(IntPtr db, IntPtr snapshot);
 
+        // TODO:
         /// <summary>
         /// Returns NULL if property name is unknown.
         /// Else returns a pointer to a malloc()-ed null-terminated value.
@@ -308,13 +312,22 @@ namespace LevelDB
         /// Number of open files that can be used by the DB.  You may need to
         /// increase this if your database has a large working set (budget
         /// one open file per 2MB of working set).
-        ///
         /// Default: 1000
         /// </summary>
         // extern void leveldb_options_set_max_open_files(leveldb_options_t*, int);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_max_open_files(IntPtr options, int value);
 
+        /// <summary>
+        /// Each block is individually compressed before being written to
+        /// persistent storage. Compression is on by default since the default
+        /// compression method is very fast, and is automatically disabled for
+        /// uncompressible data. In rare cases, applications may want to
+        /// disable compression entirely, but should only do so if benchmarks
+        /// show a performance improvement.
+        /// Default: 1 (SnappyCompression)
+        /// </summary>
+        /// <seealso cref="T:CompressionType"/>
         // extern void leveldb_options_set_compression(leveldb_options_t*, int);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_options_set_compression(IntPtr options, int value);
@@ -336,6 +349,7 @@ namespace LevelDB
             leveldb_options_set_cache(options, cache);
         }
 
+        // TODO:
         /// <summary>
         /// Approximate size of user data packed per block.  Note that the
         /// block size specified here corresponds to uncompressed data.  The
@@ -346,6 +360,7 @@ namespace LevelDB
         /// </summary>
         // extern void leveldb_options_set_block_size(leveldb_options_t*, size_t);
 
+        // TODO:
         /// <summary>
         /// Amount of data to build up in memory (backed by an unsorted log
         /// on disk) before converting to a sorted on-disk file.
@@ -361,16 +376,7 @@ namespace LevelDB
         // extern void leveldb_options_set_write_buffer_size(leveldb_options_t*, size_t);
 
         // TODO:
-        /*
-        extern void leveldb_options_set_write_buffer_size(leveldb_options_t*, size_t);
-        extern void leveldb_options_set_cache(leveldb_options_t*, leveldb_cache_t*);
-        extern void leveldb_options_set_block_size(leveldb_options_t*, size_t);
-        extern void leveldb_options_set_block_restart_interval(leveldb_options_t*, int);
-        enum {
-          leveldb_no_compression = 0,
-          leveldb_snappy_compression = 1
-        };
-        */
+        // extern void leveldb_options_set_block_restart_interval(leveldb_options_t*, int);
 #endregion
 
 #region Read Options
@@ -471,6 +477,7 @@ namespace LevelDB
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_iter_destroy(IntPtr iter);
 
+        // TODO:
         /*
 extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
          */
@@ -487,6 +494,7 @@ extern void leveldb_iter_get_error(const leveldb_iterator_t*, char** errptr);
 #endregion
 
 #region Env
+        // TODO:
         // extern leveldb_env_t* leveldb_create_default_env();
         // extern void leveldb_env_destroy(leveldb_env_t*);
 #endregion

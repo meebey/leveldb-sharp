@@ -1,5 +1,6 @@
 //  leveldb-sharp
 // 
+//  Copyright (c) 2011 The LevelDB Authors
 //  Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 // 
@@ -32,8 +33,14 @@ using System;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// Write options
+    /// </summary>
     public class WriteOptions
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
 
         /// <summary>

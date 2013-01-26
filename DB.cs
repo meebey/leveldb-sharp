@@ -1,5 +1,6 @@
 // leveldb-sharp
 //
+//  Copyright (c) 2011 The LevelDB Authors
 //  Copyright (c) 2012-2013, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 // 
@@ -34,8 +35,26 @@ using System.Collections.Generic;
 
 namespace LevelDB
 {
+    /// <remarks>
+    /// This type is thread safe.
+    ///
+    /// Concurrency:
+    /// A database may only be opened by one process at a time. The leveldb
+    /// implementation acquires a lock from the operating system to prevent
+    /// misuse. Within a single process, the same DB object may be safely
+    /// shared by multiple concurrent threads. I.e., different threads may
+    /// write into or fetch iterators or call Get on the same database without
+    /// any external synchronization (the leveldb implementation will
+    /// automatically do the required synchronization). However other objects
+    /// (like Iterator and WriteBatch) may require external synchronization.
+    /// If two threads share such an object, they must protect access to it
+    /// using their own locking protocol.
+    /// </remarks>
     public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
     {
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
         Options Options { get; set; }
         bool Disposed { get; set; }
@@ -193,11 +212,31 @@ namespace LevelDB
             return new Snapshot(this);
         }
 
+        /// <summary>
+        /// Compacts the entire database.
+        /// </summary>
+        /// <seealso cref="M:DB.CompactRange"/>
         public void Compact()
         {
             CompactRange(null, null);
         }
 
+        /// <summary>
+        /// Compact the underlying storage for the key range [startKey,limitKey].
+        /// In particular, deleted and overwritten versions are discarded,
+        /// and the data is rearranged to reduce the cost of operations
+        /// needed to access the data.  This operation should typically only
+        /// be invoked by users who understand the underlying implementation.
+        /// </summary>
+        /// <remarks>
+        /// CompactRange(null, null) will compact the entire database
+        /// </remarks>
+        /// <param name="startKey">
+        /// null is treated as a key before all keys in the database
+        /// </param>
+        /// <param name="limitKey">
+        /// null is treated as a key after all keys in the database
+        /// </param>
         public void CompactRange(string startKey, string limitKey)
         {
             CheckDisposed();

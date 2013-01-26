@@ -1,5 +1,6 @@
 //  leveldb-sharp
 // 
+//  Copyright (c) 2011 The LevelDB Authors
 //  Copyright (c) 2012, Mirco Bauer <meebey@meebey.net>
 //  All rights reserved.
 // 
@@ -32,15 +33,27 @@ using System;
 
 namespace LevelDB
 {
+    /// <summary>
+    /// DB options
+    /// </summary>
     public class Options
     {
 #pragma warning disable 414
         Cache f_BlockCache;
 #pragma warning restore 414
 
+        /// <summary>
+        /// Native handle
+        /// </summary>
         public IntPtr Handle { get; private set; }
 
+        // TODO:
         // const Comparator* comparator;
+
+        /// <summary>
+        /// If true, the database will be created if it is missing.
+        /// Default: false
+        /// </summary>
         // bool create_if_missing;
         public bool CreateIfMissing {
             set {
@@ -48,6 +61,10 @@ namespace LevelDB
             }
         }
 
+        /// <summary>
+        /// If true, an error is raised if the database already exists.
+        /// Default: false
+        /// </summary>
         // bool error_if_exists;
         public bool ErrorIfExists {
             set {
@@ -55,6 +72,14 @@ namespace LevelDB
             }
         }
 
+        /// <summary>
+        /// If true, the implementation will do aggressive checking of the
+        /// data it is processing and will stop early if it detects any
+        /// errors.  This may have unforeseen ramifications: for example, a
+        /// corruption of one DB entry may cause a large number of entries to
+        /// become unreadable or for the entire DB to become unopenable.
+        /// Default: false
+        /// </summary>
         // bool paranoid_checks;
         public bool ParanoidChecks {
             set {
@@ -62,10 +87,29 @@ namespace LevelDB
             }
         }
 
+        // TODO:
         // Env* env;
         // Logger* info_log;
+        /// <summary>
+        /// Amount of data to build up in memory (backed by an unsorted log
+        /// on disk) before converting to a sorted on-disk file.
+        ///
+        /// Larger values increase performance, especially during bulk loads.
+        /// Up to two write buffers may be held in memory at the same time,
+        /// so you may wish to adjust this parameter to control memory usage.
+        /// Also, a larger write buffer will result in a longer recovery time
+        /// the next time the database is opened.
+        ///
+        /// Default: 4MB
+        /// </summary>
         // size_t write_buffer_size;
 
+        /// <summary>
+        /// Number of open files that can be used by the DB.  You may need to
+        /// increase this if your database has a large working set (budget
+        /// one open file per 2MB of working set).
+        /// Default: 1000
+        /// </summary>
         // int max_open_files;
         public int MaxOpenFiles {
             set {
@@ -73,6 +117,14 @@ namespace LevelDB
             }
         }
 
+        /// <summary>
+        /// Control over blocks (user data is stored in a set of blocks, and
+        /// a block is the unit of reading from disk).
+        ///
+        /// If non-NULL, use the specified cache for blocks.
+        /// If NULL, leveldb will automatically create and use an 8MB internal cache.
+        /// Default: NULL
+        /// </summary>
         // Cache* block_cache;
         public Cache BlockCache {
             set {
@@ -86,9 +138,27 @@ namespace LevelDB
             }
         }
 
+        // TODO:
+        /// <summary>
+        /// Approximate size of user data packed per block.  Note that the
+        /// block size specified here corresponds to uncompressed data.  The
+        /// actual size of the unit read from disk may be smaller if
+        /// compression is enabled.  This parameter can be changed dynamically.
+        ///
+        /// Default: 4K
+        /// </summary>
         // size_t block_size;
         // int block_restart_interval;
 
+        /// <summary>
+        /// Each block is individually compressed before being written to
+        /// persistent storage. Compression is on by default since the default
+        /// compression method is very fast, and is automatically disabled for
+        /// uncompressible data. In rare cases, applications may want to
+        /// disable compression entirely, but should only do so if benchmarks
+        /// show a performance improvement.
+        /// Default: SnappyCompression
+        /// </summary>
         // CompressionType compression;
         public CompressionType Compression {
             set {
