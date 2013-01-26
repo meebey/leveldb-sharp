@@ -167,6 +167,7 @@ namespace LevelDB
 
         public void Write(WriteOptions writeOptions, WriteBatch writeBatch)
         {
+            CheckDisposed();
             if (writeOptions == null) {
                 writeOptions = new WriteOptions();
             }
