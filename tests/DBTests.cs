@@ -195,9 +195,12 @@ namespace LevelDB
             Database = new DB(options, DatabasePath);
             options = null;
             GC.Collect();
+            GC.WaitForPendingFinalizers();
             Database.Put("key1", "value1");
             Database.Dispose();
+            Database = null;
             GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         [Test]
