@@ -291,5 +291,13 @@ namespace LevelDB
             Native.leveldb_repair_db(options, DatabasePath);
             Native.leveldb_options_destroy(options);
         }
+
+        [Test]
+        public void Property()
+        {
+            var property = Native.leveldb_property_value(Database, "leveldb.stats");
+            Assert.IsNotNull(property);
+            Console.WriteLine("LevelDB stats: {0}", property);
+        }
     }
 }

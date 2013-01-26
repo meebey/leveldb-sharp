@@ -258,5 +258,13 @@ namespace LevelDB
 
             DB.Repair(null, DatabasePath);
         }
+
+        [Test]
+        public void Property()
+        {
+            var property = Database.GetProperty("leveldb.stats");
+            Assert.IsNotNull(property);
+            Console.WriteLine("LevelDB stats: {0}", property);
+        }
     }
 }

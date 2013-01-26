@@ -154,12 +154,23 @@ namespace LevelDB
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_release_snapshot(IntPtr db, IntPtr snapshot);
 
-        // TODO:
         /// <summary>
         /// Returns NULL if property name is unknown.
         /// Else returns a pointer to a malloc()-ed null-terminated value.
         /// </summary>
         // extern char* leveldb_property_value(leveldb_t* db, const char* propname);
+        [DllImport("leveldb", EntryPoint="leveldb_property_value", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr leveldb_property_value_native(IntPtr db, string propname);
+        public static string leveldb_property_value(IntPtr db, string propname)
+        {
+            var valuePtr = leveldb_property_value_native(db, propname);
+            if (valuePtr == IntPtr.Zero) {
+                return null;
+            }
+            var value = Marshal.PtrToStringAnsi(valuePtr);
+            leveldb_free(valuePtr);
+            return value;
+        }
 
         // extern void leveldb_approximate_sizes(
         //     leveldb_t* db, int num_ranges,
