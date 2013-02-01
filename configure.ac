@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([leveldb-sharp], [1.2.0], [https://github.com/meebey/leveldb-sharp/issues])
+AC_INIT([leveldb-sharp], [1.9.0], [https://github.com/meebey/leveldb-sharp/issues])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
