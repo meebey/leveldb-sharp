@@ -139,6 +139,7 @@ namespace LevelDB
                 return null;
             }
             var value = Marshal.PtrToStringAnsi(valuePtr, (int) valueLength);
+            leveldb_free(valuePtr);
             return value;
         }
 
