@@ -87,6 +87,18 @@ namespace LevelDB
         }
 
         [Test]
+        [ExpectedException(typeof(ApplicationException))]
+        public void Error()
+        {
+            var options = new Options() {
+                CreateIfMissing = false
+            };
+            var db = new DB(options, "non-existent");
+            Assert.Fail();
+            db.Get("key1");
+        }
+
+        [Test]
         public void Put()
         {
             Database.Put(null, "key1", "value1");
