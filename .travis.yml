@@ -1,0 +1,9 @@
+language: c
+
+install:
+    - sudo apt-get update > /dev/null
+    - sudo apt-get install mono-devel nunit-console > /dev/null
+
+script:
+    - xbuild leveldb-sharp.sln
+    - nunit-console bin/Debug/leveldb-sharp-tests.dll
