@@ -26,10 +26,13 @@ endif
 
 EXTRA_DIST = \
 	$(SOURCE_FILES) $(BUILD_FILE) \
+	$(srcdir)/README.md \
+	$(srcdir)/LICENSE \
 	$(srcdir)/leveldb-sharp.snk \
 	$(srcdir)/leveldb-sharp.dll.config
 
-CLEANFILES =
+CLEANFILES = \
+	$(OUTPUT_DIR)/leveldb-sharp.dll.config
 # end of magic
 
 $(ASSEMBLY_TARGET) $(ASSEMBLY_TARGET).mdb: $(BUILD_FILE) $(SOURCE_FILES)
