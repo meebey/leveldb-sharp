@@ -41,7 +41,7 @@ namespace LevelDB
     /// </summary>
     public static class Native
     {
-        static void CheckError(IntPtr error)
+        public static void CheckError(IntPtr error)
         {
             if (error == IntPtr.Zero) {
                 return;
