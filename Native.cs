@@ -41,18 +41,25 @@ namespace LevelDB
     /// </summary>
     public static class Native
     {
+        public static void CheckError(string error)
+        {
+            if (String.IsNullOrEmpty(error)) {
+                return;
+            }
+
+            throw new ApplicationException(error);
+        }
+
         public static void CheckError(IntPtr error)
         {
             if (error == IntPtr.Zero) {
                 return;
             }
 
-            var exception = new ApplicationException(Marshal.PtrToStringAnsi(error));
-            leveldb_free(error);
-            throw exception;
+            CheckError(GetAndReleaseString(error));
         }
 
-        static UIntPtr GetStringLength(string value)
+        public static UIntPtr GetStringLength(string value)
         {
             if (value == null || value.Length == 0) {
                 return UIntPtr.Zero;
@@ -60,22 +67,45 @@ namespace LevelDB
             return new UIntPtr((uint) Encoding.UTF8.GetByteCount(value));
         }
 
+        public static string GetAndReleaseString(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero) {
+                return null;
+            }
+
+            var str = Marshal.PtrToStringAnsi(ptr);
+            leveldb_free(ptr);
+            return str;
+        }
+
 #region DB operations
+        #region leveldb_open
         // extern leveldb_t* leveldb_open(const leveldb_options_t* options, const char* name, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_open(IntPtr options, string name, out IntPtr error);
+
+        public static IntPtr leveldb_open(IntPtr options, string name, out string error)
+        {
+            IntPtr errorPtr;
+            var db = leveldb_open(options, name, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+            return db;
+        }
+
         public static IntPtr leveldb_open(IntPtr options, string name)
         {
-            IntPtr error;
+            string error;
             var db = leveldb_open(options, name, out error);
             CheckError(error);
             return db;
         }
+        #endregion
 
         // extern void leveldb_close(leveldb_t* db);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_close(IntPtr db);
 
+        #region leveldb_put
         // extern void leveldb_put(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, const char* val, size_t vallen, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_put(IntPtr db,
@@ -85,12 +115,27 @@ namespace LevelDB
                                               string value,
                                               UIntPtr valueLength,
                                               out IntPtr error);
+
+        public static void leveldb_put(IntPtr db,
+                                       IntPtr writeOptions,
+                                       string key,
+                                       UIntPtr keyLength,
+                                       string value,
+                                       UIntPtr valueLength,
+                                       out string error)
+        {
+            IntPtr errorPtr;
+            leveldb_put(db, writeOptions, key, keyLength, value, valueLength,
+                        out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+        }
+
         public static void leveldb_put(IntPtr db,
                                        IntPtr writeOptions,
                                        string key,
                                        string value)
         {
-            IntPtr error;
+            string error;
             var keyLength = GetStringLength(key);
             var valueLength = GetStringLength(value);
             Native.leveldb_put(db, writeOptions,
@@ -98,28 +143,50 @@ namespace LevelDB
                                value, valueLength, out error);
             CheckError(error);
         }
+        #endregion
 
+        #region leveldb_delete
         // extern void leveldb_delete(leveldb_t* db, const leveldb_writeoptions_t* options, const char* key, size_t keylen, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_delete(IntPtr db, IntPtr writeOptions, string key, UIntPtr keylen, out IntPtr error);
+
+        public static void leveldb_delete(IntPtr db, IntPtr writeOptions, string key, UIntPtr keylen, out string error)
+        {
+            IntPtr errorPtr;
+            leveldb_delete(db, writeOptions, key, keylen, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+        }
+
         public static void leveldb_delete(IntPtr db, IntPtr writeOptions, string key)
         {
-            IntPtr error;
+            string error;
             var keyLength = GetStringLength(key);
             leveldb_delete(db, writeOptions, key, keyLength, out error);
             CheckError(error);
         }
+        #endregion
 
+        #region leveldb_write
         // extern void leveldb_write(leveldb_t* db, const leveldb_writeoptions_t* options, leveldb_writebatch_t* batch, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_write(IntPtr db, IntPtr writeOptions, IntPtr writeBatch, out IntPtr error);
+
+        public static void leveldb_write(IntPtr db, IntPtr writeOptions, IntPtr writeBatch, out string error)
+        {
+            IntPtr errorPtr;
+            leveldb_write(db, writeOptions, writeBatch, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+        }
+
         public static void leveldb_write(IntPtr db, IntPtr writeOptions, IntPtr writeBatch)
         {
-            IntPtr error;
+            string error;
             leveldb_write(db, writeOptions, writeBatch, out error);
             CheckError(error);
         }
+        #endregion
 
+        #region leveldb_get
         // extern char* leveldb_get(leveldb_t* db, const leveldb_readoptions_t* options, const char* key, size_t keylen, size_t* vallen, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr leveldb_get(IntPtr db,
@@ -128,12 +195,27 @@ namespace LevelDB
                                                 UIntPtr keyLength,
                                                 out UIntPtr valueLength,
                                                 out IntPtr error);
+
+        public static IntPtr leveldb_get(IntPtr db,
+                                         IntPtr readOptions,
+                                         string key,
+                                         UIntPtr keyLength,
+                                         out UIntPtr valueLength,
+                                         out string error)
+        {
+            IntPtr errorPtr;
+            var valuePtr = leveldb_get(db, readOptions, key, keyLength,
+                                       out valueLength, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+            return valuePtr;
+        }
+
         public static string leveldb_get(IntPtr db,
                                          IntPtr readOptions,
                                          string key)
         {
             UIntPtr valueLength;
-            IntPtr error;
+            string error;
             var keyLength = GetStringLength(key);
             var valuePtr = leveldb_get(db, readOptions, key, keyLength,
                                        out valueLength, out error);
@@ -145,6 +227,7 @@ namespace LevelDB
             leveldb_free(valuePtr);
             return value;
         }
+        #endregion
 
         // extern leveldb_iterator_t* leveldb_create_iterator(leveldb_t* db, const leveldb_readoptions_t* options);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
@@ -216,25 +299,45 @@ namespace LevelDB
 #endregion
 
 #region Management operations
+        #region leveldb_destroy_db
         // extern void leveldb_destroy_db(const leveldb_options_t* options, const char* name, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_destroy_db(IntPtr options, string path, out IntPtr error);
+
+        public static void leveldb_destroy_db(IntPtr options, string path, out string error)
+        {
+            IntPtr errorPtr;
+            leveldb_destroy_db(options, path, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+        }
+
         public static void leveldb_destroy_db(IntPtr options, string path)
         {
-            IntPtr error;
+            string error;
             leveldb_destroy_db(options, path, out error);
             CheckError(error);
         }
+        #endregion
 
+        #region leveldb_repair_db
         // extern void leveldb_repair_db(const leveldb_options_t* options, const char* name, char** errptr);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
         public static extern void leveldb_repair_db(IntPtr options, string path, out IntPtr error);
+
+        public static void leveldb_repair_db(IntPtr options, string path, out string error)
+        {
+            IntPtr errorPtr;
+            leveldb_repair_db(options, path, out errorPtr);
+            error = GetAndReleaseString(errorPtr);
+        }
+
         public static void leveldb_repair_db(IntPtr options, string path)
         {
-            IntPtr error;
+            string error;
             leveldb_repair_db(options, path, out error);
             CheckError(error);
         }
+        #endregion
 #endregion
 
 #region Write batch
