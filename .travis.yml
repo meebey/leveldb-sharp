@@ -1,7 +1,7 @@
 language: c
 
 install:
-    - sudo add-apt-repository ppa:ceph-ubuntu/dev
+    - sudo add-apt-repository -y ppa:ceph-ubuntu/dev
     - sudo apt-get update > /dev/null
     - sudo apt-get install mono-devel libleveldb-dev nunit-console > /dev/null
 
