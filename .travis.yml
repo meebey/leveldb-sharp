@@ -1,8 +1,9 @@
 language: c
 
 install:
+    - sudo add-apt-repository ppa:ceph-ubuntu/dev
     - sudo apt-get update > /dev/null
-    - sudo apt-get install mono-devel nunit-console > /dev/null
+    - sudo apt-get install mono-devel libleveldb-dev nunit-console > /dev/null
 
 script:
     - xbuild leveldb-sharp.sln
