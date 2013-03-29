@@ -1,9 +1,10 @@
 language: c
 
 install:
-    - sudo add-apt-repository -y ppa:ceph-ubuntu/dev
+    - sudo sudo -s bash -c 'echo "deb http://http.debian.net/debian experimental main" >> /etc/apt/sources.list'
     - sudo apt-get update > /dev/null
-    - sudo apt-get install mono-devel libleveldb-dev libleveldb1 nunit-console > /dev/null
+    - sudo apt-get install mono-devel nunit-console > /dev/null
+    - sudo apt-get install -t experimental libleveldb-dev
 
 script:
     - xbuild leveldb-sharp.sln
