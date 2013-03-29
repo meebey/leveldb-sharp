@@ -4,7 +4,7 @@ install:
     - sudo sudo -s bash -c 'echo "deb http://http.debian.net/debian experimental main" >> /etc/apt/sources.list'
     - sudo apt-get update > /dev/null
     - sudo apt-get install mono-devel nunit-console > /dev/null
-    - sudo apt-get install -t experimental libleveldb-dev
+    - sudo apt-get install --force-yes -t experimental libleveldb-dev
 
 script:
     - xbuild leveldb-sharp.sln
