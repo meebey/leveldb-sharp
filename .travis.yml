@@ -11,4 +11,6 @@ script:
     - nunit-console bin/Debug/leveldb-sharp-tests.dll
 
 notifications:
-    irc: "irc.oftc.net#smuxi-devel"
+    irc:
+        channels: "irc.oftc.net#smuxi-devel"
+        skip_join: true
