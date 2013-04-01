@@ -9,3 +9,6 @@ install:
 script:
     - xbuild leveldb-sharp.sln
     - nunit-console bin/Debug/leveldb-sharp-tests.dll
+
+notifications:
+    irc: "irc.oftc.net#smuxi-devel"
