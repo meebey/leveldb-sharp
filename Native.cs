@@ -570,7 +570,7 @@ namespace LevelDB
 
         // extern unsigned char leveldb_iter_valid(const leveldb_iterator_t*);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool leveldb_iter_valid(IntPtr iter);
+        public static extern byte leveldb_iter_valid(IntPtr iter);
 
         // extern void leveldb_iter_prev(leveldb_iterator_t*);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
@@ -664,7 +664,7 @@ namespace LevelDB
             var options = Native.leveldb_readoptions_create();
             IntPtr iter = Native.leveldb_create_iterator(db, options);
             for (Native.leveldb_iter_seek_to_first(iter);
-                 Native.leveldb_iter_valid(iter);
+                 (int)Native.leveldb_iter_valid(iter) != 0;
                  Native.leveldb_iter_next(iter)) {
                 string key = Native.leveldb_iter_key(iter);
                 string value = Native.leveldb_iter_value(iter);
