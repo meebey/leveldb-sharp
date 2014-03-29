@@ -173,6 +173,22 @@ namespace LevelDB
         }
 
         [Test]
+        public void IsValid()
+        {
+            var writeOptions = Native.leveldb_writeoptions_create();
+            Native.leveldb_put(Database, writeOptions, "key1", "value1");
+
+            var readOptions = Native.leveldb_readoptions_create();
+            IntPtr iter = Native.leveldb_create_iterator(Database, readOptions);
+
+            Native.leveldb_iter_seek_to_last(iter);
+            Assert.IsTrue(Native.leveldb_iter_valid(iter));
+
+            Native.leveldb_iter_next(iter);
+            Assert.IsFalse(Native.leveldb_iter_valid(iter));
+        }
+
+        [Test]
         public void Enumerator()
         {
             var writeOptions = Native.leveldb_writeoptions_create();

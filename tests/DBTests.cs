@@ -174,6 +174,19 @@ namespace LevelDB
         }
 
         [Test]
+        public void IsValid()
+        {
+            Database.Put(null, "key1", "value1");
+
+            var iter = new Iterator(Database, null);
+            iter.SeekToLast();
+            Assert.IsTrue(iter.IsValid);
+
+            iter.Next();
+            Assert.IsFalse(iter.IsValid);
+        }
+
+        [Test]
         public void Enumerator()
         {
             Database.Put(null, "key1", "value1");
