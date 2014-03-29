@@ -55,7 +55,7 @@ namespace LevelDB
 
         public bool IsValid {
             get {
-                return Native.leveldb_iter_valid(Handle);
+                return (int)Native.leveldb_iter_valid(Handle)!=0;
             }
         }
 
