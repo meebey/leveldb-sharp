@@ -184,7 +184,7 @@ namespace LevelDB
             var readOptions = Native.leveldb_readoptions_create();
             IntPtr iter = Native.leveldb_create_iterator(Database, readOptions);
             for (Native.leveldb_iter_seek_to_first(iter);
-                 Native.leveldb_iter_valid(iter);
+                 (int)Native.leveldb_iter_valid(iter) != 0;
                  Native.leveldb_iter_next(iter)) {
                 string key = Native.leveldb_iter_key(iter);
                 string value = Native.leveldb_iter_value(iter);
