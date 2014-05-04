@@ -569,8 +569,12 @@ namespace LevelDB
         }
 
         // extern unsigned char leveldb_iter_valid(const leveldb_iterator_t*);
-        [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool leveldb_iter_valid(IntPtr iter);
+        [DllImport("leveldb", EntryPoint="leveldb_iter_valid", CallingConvention = CallingConvention.Cdecl)]
+        public static extern byte leveldb_iter_valid_native(IntPtr iter);
+        public static bool leveldb_iter_valid(IntPtr iter)
+        {
+            return leveldb_iter_valid_native(iter) != 0;
+        }
 
         // extern void leveldb_iter_prev(leveldb_iterator_t*);
         [DllImport("leveldb", CallingConvention = CallingConvention.Cdecl)]
