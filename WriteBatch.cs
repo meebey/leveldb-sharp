@@ -69,13 +69,13 @@ namespace LevelDB
             Native.leveldb_writebatch_destroy(Handle);
         }
 
-        public WriteBatch Put(string key, string value)
+        public WriteBatch Put(byte[] key, byte[] value)
         {
             Native.leveldb_writebatch_put(Handle, key, value);
             return this;
         }
 
-        public WriteBatch Delete(string key)
+        public WriteBatch Delete(byte[] key)
         {
             Native.leveldb_writebatch_delete(Handle, key);
             return this;

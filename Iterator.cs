@@ -43,7 +43,7 @@ namespace LevelDB
     /// If two threads share this object, they must protect access to it using
     /// their own locking protocol.
     /// </remarks>
-    public class Iterator : IEnumerator<KeyValuePair<string, string>>
+    public class Iterator : IEnumerator<KeyValuePair<byte[], byte[]>>
     {
         /// <summary>
         /// Native handle
@@ -59,13 +59,13 @@ namespace LevelDB
             }
         }
 
-        public string Key {
+        public byte[] Key {
             get {
                 return Native.leveldb_iter_key(Handle);
             }
         }
 
-        public string Value {
+        public byte[] Value {
             get {
                 return Native.leveldb_iter_value(Handle);
             }
@@ -77,9 +77,9 @@ namespace LevelDB
             }
         }
 
-        public KeyValuePair<string, string> Current {
+        public KeyValuePair<byte[], byte[]> Current {
             get {
-                return new KeyValuePair<string, string>(Key, Value);
+                return new KeyValuePair<byte[], byte[]>(Key, Value);
             }
         }
 
@@ -115,7 +115,7 @@ namespace LevelDB
             Native.leveldb_iter_seek_to_last(Handle);
         }
 
-        public void Seek(string key)
+        public void Seek(byte[] key)
         {
             Native.leveldb_iter_seek(Handle, key);
         }
