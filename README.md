@@ -41,7 +41,7 @@ Currently leveldb-sharp lacks:
  * [Smuxi IRC Client][Smuxi]
  * [Dazzle database][Dazzle]
 
- [LevelDB library]: http://code.google.com/p/leveldb/
+ [LevelDB library]: https://github.com/google/leveldb
  [low-level function calls]: https://github.com/meebey/leveldb-sharp/blob/master/Native.cs
  [high-level object oriented API]: https://github.com/meebey/leveldb-sharp/blob/master/DB.cs
  [leveldb-sharp-1.9.1.tar.gz]: http://www.meebey.net/projects/leveldb-sharp/downloads/leveldb-sharp-1.9.1.tar.gz
