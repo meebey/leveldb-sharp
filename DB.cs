@@ -50,7 +50,7 @@ namespace LevelDB
     /// If two threads share such an object, they must protect access to it
     /// using their own locking protocol.
     /// </remarks>
-    public class DB : IDisposable, IEnumerable<KeyValuePair<string, string>>
+    public class DB : IDisposable, IEnumerable<KeyValuePair<byte[], byte[]>>
     {
         /// <summary>
         /// Native handle
@@ -59,7 +59,7 @@ namespace LevelDB
         Options Options { get; set; }
         bool Disposed { get; set; }
 
-        public string this[string key] {
+        public byte[] this[byte[] key] {
             get {
                 return Get(null, key);
             }
@@ -137,7 +137,7 @@ namespace LevelDB
             Native.leveldb_destroy_db(options.Handle, path);
         }
 
-        public void Put(WriteOptions options, string key, string value)
+        public void Put(WriteOptions options, byte[] key, byte[] value)
         {
             CheckDisposed();
             if (options == null) {
@@ -146,12 +146,12 @@ namespace LevelDB
             Native.leveldb_put(Handle, options.Handle, key, value);
         }
 
-        public void Put(string key, string value)
+        public void Put(byte[] key, byte[] value)
         {
             Put(null, key, value);
         }
 
-        public void Delete(WriteOptions options, string key)
+        public void Delete(WriteOptions options, byte[] key)
         {
             CheckDisposed();
             if (options == null) {
@@ -160,7 +160,7 @@ namespace LevelDB
             Native.leveldb_delete(Handle, options.Handle, key);
         }
 
-        public void Delete(string key)
+        public void Delete(byte[] key)
         {
             Delete(null, key);
         }
@@ -182,7 +182,7 @@ namespace LevelDB
             Write(null, writeBatch);
         }
 
-        public string Get(ReadOptions options, string key)
+        public byte[] Get(ReadOptions options, byte[] key)
         {
             CheckDisposed();
             if (options == null) {
@@ -191,7 +191,7 @@ namespace LevelDB
             return Native.leveldb_get(Handle, options.Handle, key);
         }
 
-        public string Get(string key)
+        public byte[] Get(byte[] key)
         {
             return Get(null, key);
         }
@@ -201,7 +201,7 @@ namespace LevelDB
             return GetEnumerator();
         }
 
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        public IEnumerator<KeyValuePair<byte[], byte[]>> GetEnumerator()
         {
             CheckDisposed();
             return new Iterator(this, null);
@@ -238,7 +238,7 @@ namespace LevelDB
         /// <param name="limitKey">
         /// null is treated as a key after all keys in the database
         /// </param>
-        public void CompactRange(string startKey, string limitKey)
+        public void CompactRange(byte[] startKey, byte[] limitKey)
         {
             CheckDisposed();
             Native.leveldb_compact_range(Handle, startKey, limitKey);
